@@ -2,12 +2,11 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { TagIcon, TrendingUpIcon } from "lucide-react"
-import PaywallSection from "@/components/paywall-section"
+import { BadgeCheckIcon, TagIcon, TrendingUpIcon } from "lucide-react"
 
-export default function Home() {
-  // Sample free deals data
-  const freeDeals = [
+export default function PremiumDealsPage() {
+  // Sample premium deals data
+  const premiumDeals = [
     {
       id: 1,
       title: "Summer Collection Flash Sale",
@@ -32,6 +31,65 @@ export default function Home() {
       image: "/placeholder.svg?height=200&width=300",
       expiresIn: "3 days",
     },
+    {
+      id: 4,
+      title: "Exclusive Member Discount",
+      code: "VIPONLY",
+      discount: "30% OFF",
+      image: "/placeholder.svg?height=200&width=300",
+      expiresIn: "5 days",
+      hot: true,
+    },
+    {
+      id: 5,
+      title: "Seasonal Clearance",
+      code: "CLEAR50",
+      discount: "50% OFF",
+      image: "/placeholder.svg?height=200&width=300",
+      expiresIn: "Limited time",
+      hot: true,
+    },
+    {
+      id: 6,
+      title: "Accessories Bundle",
+      code: "BUNDLE20",
+      discount: "20% OFF",
+      image: "/placeholder.svg?height=200&width=300",
+      expiresIn: "4 days",
+    },
+    {
+      id: 7,
+      title: "Premium Collection",
+      code: "PREMIUM15",
+      discount: "15% OFF",
+      image: "/placeholder.svg?height=200&width=300",
+      expiresIn: "7 days",
+    },
+    {
+      id: 8,
+      title: "Flash Sale: Dresses",
+      code: "DRESS30",
+      discount: "30% OFF",
+      image: "/placeholder.svg?height=200&width=300",
+      expiresIn: "24 hours",
+      hot: true,
+    },
+    {
+      id: 9,
+      title: "Footwear Collection",
+      code: "SHOES25",
+      discount: "25% OFF",
+      image: "/placeholder.svg?height=200&width=300",
+      expiresIn: "3 days",
+    },
+    {
+      id: 10,
+      title: "First Order Special",
+      code: "FIRST15",
+      discount: "15% OFF",
+      image: "/placeholder.svg?height=200&width=300",
+      expiresIn: "No expiry",
+    },
   ]
 
   return (
@@ -39,8 +97,12 @@ export default function Home() {
       {/* Hero Section */}
       <section className="bg-black text-white py-10">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Exclusive Fashion Deals</h1>
-          <p className="text-lg mb-6">Get access to the hottest promo codes and flash sales</p>
+          <div className="inline-flex items-center gap-2 bg-[#ff007a] px-4 py-2 rounded-full mb-4">
+            <BadgeCheckIcon className="h-5 w-5" />
+            <span className="font-medium">Premium Member</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Exclusive Premium Deals</h1>
+          <p className="text-lg mb-6">Thank you for your purchase! Enjoy unlimited access to all our premium deals.</p>
           <div className="flex justify-center gap-2">
             <div className="bg-[#ff007a] text-white px-4 py-2 rounded-full flex items-center">
               <TagIcon className="w-4 h-4 mr-2" />
@@ -54,17 +116,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Free Deals Section */}
+      {/* Premium Deals Section */}
       <section className="py-12 container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Free Deals Preview</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">All Premium Deals</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {freeDeals.map((deal) => (
+          {premiumDeals.map((deal) => (
             <Card key={deal.id} className="overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
               <div className="relative h-48">
                 <Image src={deal.image || "/placeholder.svg"} alt={deal.title} fill className="object-cover" />
                 <div className="absolute top-2 right-2 bg-[#ff007a] text-white px-3 py-1 rounded-full text-sm font-bold">
                   {deal.discount}
                 </div>
+                {deal.hot && (
+                  <div className="absolute top-2 left-2 bg-black text-white px-3 py-1 rounded-full text-sm font-bold">
+                    HOT DEAL
+                  </div>
+                )}
               </div>
               <CardHeader>
                 <CardTitle className="text-xl">{deal.title}</CardTitle>
@@ -82,9 +149,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      {/* Paywall Section */}
-      <PaywallSection />
 
       {/* Ad Banner Placeholder */}
       <section className="py-8 container mx-auto px-4">
