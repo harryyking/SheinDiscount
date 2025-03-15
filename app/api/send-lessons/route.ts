@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
 
     // Send lessons to each user
     const results = await Promise.allSettled(
-      users.map(async (user) => {
+      users.map(async (user: any) => {
         try {
           // Call the send-lesson endpoint for each user
           await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/send-lesson`, {
