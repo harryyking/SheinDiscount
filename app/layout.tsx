@@ -1,20 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const brandFont = Be_Vietnam_Pro({subsets: ["latin"], weight: ["100", "200", "500", "700"]})
 
 export const metadata: Metadata = {
-  title: "Shein Deal Snap - Hot Shein Deals Daily",
-  description: "Unlock the best Shein flash sales and promo codes for just $5.99!",
+  title: "WhatsLearn",
+  description: "Learn with Suzzy",
 };
 
 export default function RootLayout({
@@ -25,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={brandFont.className}
       >
         {children}
       </body>

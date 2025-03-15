@@ -1,127 +1,82 @@
 import Link from "next/link"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { TagIcon, TrendingUpIcon } from "lucide-react"
-import PaywallSection from "@/components/paywall-section"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { BookOpen, MessageSquare, DollarSign } from "lucide-react"
 
-export default function Home() {
-  // Sample free deals data
-  const freeDeals = [
-    {
-      id: 1,
-      title: "Summer Collection Flash Sale",
-      code: "SUMMER25",
-      discount: "25% OFF",
-      image: "/placeholder.svg?height=200&width=300",
-      expiresIn: "2 days",
-    },
-    {
-      id: 2,
-      title: "New Arrivals Special",
-      code: "NEWSTYLE",
-      discount: "15% OFF",
-      image: "/placeholder.svg?height=200&width=300",
-      expiresIn: "1 day",
-    },
-    {
-      id: 3,
-      title: "Weekend Special Offer",
-      code: "WEEKEND20",
-      discount: "20% OFF",
-      image: "/placeholder.svg?height=200&width=300",
-      expiresIn: "3 days",
-    },
-  ]
-
+export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-[#f5f5f5]">
+    <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="bg-black text-white py-10">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Exclusive Fashion Deals</h1>
-          <p className="text-lg mb-6">Get access to the hottest promo codes and flash sales</p>
-          <div className="flex justify-center gap-2">
-            <div className="bg-[#ff007a] text-white px-4 py-2 rounded-full flex items-center">
-              <TagIcon className="w-4 h-4 mr-2" />
-              <span>Verified Deals</span>
-            </div>
-            <div className="bg-white text-black px-4 py-2 rounded-full flex items-center">
-              <TrendingUpIcon className="w-4 h-4 mr-2" />
-              <span>Updated Daily</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Free Deals Section */}
-      <section className="py-12 container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Free Deals Preview</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {freeDeals.map((deal) => (
-            <Card key={deal.id} className="overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
-              <div className="relative h-48">
-                <Image src={deal.image || "/placeholder.svg"} alt={deal.title} fill className="object-cover" />
-                <div className="absolute top-2 right-2 bg-[#ff007a] text-white px-3 py-1 rounded-full text-sm font-bold">
-                  {deal.discount}
-                </div>
+      <main className="flex-1">
+        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-black">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none text-white">
+                  Learn Anything, Anytime with WhatsLearn
+                </h1>
+                <p className="mx-auto max-w-[700px] text-zinc-200 md:text-xl">
+                  Daily AI-powered micro-lessons delivered via WhatsApp for $10/month
+                </p>
               </div>
-              <CardHeader>
-                <CardTitle className="text-xl">{deal.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-between items-center">
-                  <div className="bg-black text-white px-3 py-1 rounded text-sm font-mono">{deal.code}</div>
-                  <div className="text-sm text-gray-500">Expires in {deal.expiresIn}</div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full bg-black hover:bg-gray-800 text-white">Shop Now</Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Paywall Section */}
-      <PaywallSection />
-
-      {/* Ad Banner Placeholder */}
-      <section className="py-8 container mx-auto px-4">
-        <div className="bg-gray-200 rounded-lg p-6 text-center">
-          <p className="text-gray-500 mb-2">Advertisement</p>
-          <div className="h-20 flex items-center justify-center border border-dashed border-gray-400">
-            <p className="text-gray-400">Fashion Ad Banner Placeholder</p>
+              <div className="space-x-4">
+                <Link href="/register">
+                  <Button className="bg-[#00D95F] text-black hover:bg-[#00D95F]/90">Get Started</Button>
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Features Section */}
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <Card className="border-2 border-[#00D95F]">
+                <CardHeader>
+                  <BookOpen className="h-10 w-10 text-[#00D95F]" />
+                  <CardTitle className="mt-4">Personalized Lessons</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription>
+                    AI-tailored micro-lessons designed specifically for your learning goals and preferences.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              <Card className="border-2 border-[#00D95F]">
+                <CardHeader>
+                  <MessageSquare className="h-10 w-10 text-[#00D95F]" />
+                  <CardTitle className="mt-4">WhatsApp Convenience</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription>
+                    Learn directly in WhatsApp - no new apps to download or platforms to navigate.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              <Card className="border-2 border-[#00D95F]">
+                <CardHeader>
+                  <DollarSign className="h-10 w-10 text-[#00D95F]" />
+                  <CardTitle className="mt-4">Affordable Learning</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription>
+                    Quality education at just $10/month - less than the cost of a streaming service.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+      </main>
 
       {/* Footer */}
-      <footer className="bg-black text-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <h3 className="text-xl font-bold">Fashion Deals</h3>
-              <p className="text-gray-400 text-sm mt-1">Your source for exclusive fashion savings</p>
-            </div>
-            <div className="flex gap-4">
-              <Link href="/terms" className="text-gray-400 hover:text-white">
-                Terms
-              </Link>
-              <Link href="/privacy" className="text-gray-400 hover:text-white">
-                Privacy
-              </Link>
-              <Link href="/contact" className="text-gray-400 hover:text-white">
-                Contact
-              </Link>
-            </div>
-          </div>
-          <div className="mt-6 text-center text-gray-400 text-sm">
-            &copy; {new Date().getFullYear()} Fashion Deals. All rights reserved.
-          </div>
+      <footer className="w-full py-6 bg-black">
+        <div className="container px-4 md:px-6">
+          <p className="text-center text-[#00D95F]">© {new Date().getFullYear()} WhatsLearn</p>
         </div>
       </footer>
-    </main>
+    </div>
   )
 }
 
