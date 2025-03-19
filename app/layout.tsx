@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Provider from "@/components/Provider";
 
-const brandFont = Bricolage_Grotesque({subsets: ["latin"]})
+const brandFont = Space_Grotesk({subsets: ["latin"]})
 
 export const metadata: Metadata = {
   title: "WhatsLearn",
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme={"halloween"}>
+    <html lang="en" data-theme={"forest"}>
       <body
         className={brandFont.className}
       >
