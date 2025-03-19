@@ -51,9 +51,7 @@ export async function addVotes(params: any) {
 
     const vote = await prisma.vote.create({
       data: {
-        product:{
-            connect: {id: productId.id}
-        },
+       productId: productId.id,
         value: params.value,
       },
     });
