@@ -34,7 +34,7 @@ export async function createProduct(params: CreateProductParams) {
 }
 
 // Add Vote
-export async function addVotes(params: AddVoteParams) {
+export async function addVotes(params: any) {
   try {
     const session = await getServerSession(authOptions)
 
