@@ -73,7 +73,7 @@ const PriceTesterWidget: React.FC<PriceTesterWidgetProps> = ({
   // Handle voting
   const handleVote = async (value: "too_high" | "just_right" | "a_steal") => {
     try {
-      const response = await addVotes({ productId, value });
+      const response = await addVotes({value});
       if (!response.success) throw new Error(response.error || "Failed to submit vote");
 
       // Store vote in localStorage to prevent multiple votes

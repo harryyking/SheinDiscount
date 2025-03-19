@@ -1,5 +1,7 @@
 "use server";
+import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
+import { getServerSession } from "next-auth";
 
 // Types
 type CreateProductParams = {
@@ -11,7 +13,6 @@ type CreateProductParams = {
 };
 
 type AddVoteParams = {
-  productId: string;
   value: "too_high" | "just_right" | "a_steal";
 };
 
@@ -35,9 +36,22 @@ export async function createProduct(params: CreateProductParams) {
 // Add Vote
 export async function addVotes(params: AddVoteParams) {
   try {
+    const session = await getServerSession(authOptions)
+
+    if(!session) throw new Error("Unathorized")
+
+    const userEmail = session.user.email
+
+    const productId = await prisma.user.findUnique({
+        where: {email: userEmail},
+        select: {id: true}
+    })
+
+    if(!productId) throw new Error("Cannot find ProductID")
+
     const vote = await prisma.vote.create({
       data: {
-        productId: params.productId,
+        productId: productId.id,
         value: params.value,
       },
     });
