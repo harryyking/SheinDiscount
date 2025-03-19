@@ -1,118 +1,106 @@
-import ProductList from '@/components/ProductList';
-import { authOptions } from '@/lib/auth';
-import prisma from '@/lib/db';
-import { getServerSession } from 'next-auth';
-import Link from 'next/link';
+"use client";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
-export default function DashboardPage() {
- 
-  // const session = await getServerSession(authOptions)
-  // const userEmail = session?.user.email
-  // const findUserInDB = await prisma.user.findUnique({
-  //   where:{email: userEmail},
-  //   select: {id : true}
-  // })
+// Register Chart.js components
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+interface Plan {
+  id: string;
+  name: string;
+  price: number;
+  Vote: { value: "too_high" | "just_right" | "a_steal" }[];
+}
 
-  // if (!findUserInDB) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <div className="card bg-base-100 shadow-xl">
-  //         <div className="card-body">
-  //           <h2 className="card-title">Authentication Required</h2>
-  //           <p>Please log in to access the dashboard.</p>
-  //           <div className="card-actions justify-end mt-4">
-  //             <Link href="/login" className="btn btn-primary">
-  //               Log In
-  //             </Link>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+interface Product {
+  id: string;
+  name: string;
+  Plan: Plan[];
+}
+
+interface Props {
+  products: Product[];
+}
+
+export default function DashboardContent({ products }: Props) {
+  // Recommendation logic based on votes
+  const getRecommendation = (plan: Plan): string => {
+    const votes = plan.Vote;
+    const totalVotes = votes.length;
+    if (totalVotes < 10) return "Need more votes for a solid recommendation.";
+    
+    const tooHigh = votes.filter((v) => v.value === "too_high").length;
+    const justRight = votes.filter((v) => v.value === "just_right").length;
+    const aSteal = votes.filter((v) => v.value === "a_steal").length;
+    const tooHighPercent = (tooHigh / totalVotes) * 100;
+    const aStealPercent = (aSteal / totalVotes) * 100;
+
+    if (tooHighPercent > 50) {
+      return `Over 50% say "${plan.name}" at $${plan.price} is Too High. Try lowering it by 10-20% to boost signups.`;
+    } else if (aStealPercent > 50) {
+      return `Over 50% say "${plan.name}" at $${plan.price} is A Steal. You could raise it by 10-20% for more MRR.`;
+    } else if (justRight > tooHigh && justRight > aSteal) {
+      return `"${plan.name}" at $${plan.price} feels Just Right to most. Keep it steady and monitor!`;
+    }
+    return "Votes are mixed—gather more feedback to see a clear trend.";
+  };
+
+  // Chart data generator
+  const getChartData = (plan: Plan) => ({
+    labels: ["Too High", "Just Right", "A Steal"],
+    datasets: [
+      {
+        label: "Votes",
+        data: [
+          plan.Vote.filter((v) => v.value === "too_high").length,
+          plan.Vote.filter((v) => v.value === "just_right").length,
+          plan.Vote.filter((v) => v.value === "a_steal").length,
+        ],
+        backgroundColor: ["#ef4444", "#22c55e", "#3b82f6"], // Red, Green, Blue
+        borderWidth: 1,
+      },
+    ],
+  });
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: { y: { beginAtZero: true, title: { display: true, text: "Vote Count" } } },
+    plugins: { legend: { display: false } },
+  };
 
   return (
-    <div className="flex min-h-screen bg-base-200">
-
-      {/* Main Content */}
-      <div className="flex-1 p-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold">Dashboard</h1>
-            <button 
-              className="btn btn-primary" 
-            >
-              Add New Product
-            </button>
-          </div>
-
-          {/* Create Product Form */}
-            <div className="card bg-base-100 shadow-xl mb-8">
-              <div className="card-body">
-                <h2 className="card-title">Add New Product</h2>
-                <form>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Product Name</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Product Name"
-                      className="input input-bordered"
-                      required
-                    />
-                  </div>
-                  <div className="form-control mt-4">
-                    <label className="label">
-                      <span className="label-text">Price ($)</span>
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0.01"
-                      placeholder="0.00"
-                      className="input input-bordered"
-                      required
-                    />
-                  </div>
-
-                  {/* {errorMessage && (
-                    <div className="alert alert-error mt-4">
-                      {errorMessage}
-                    </div>
-                  )} */}
-
-                  <div className="card-actions justify-end mt-6">
-                    <button
-                      type="button"
-                      className="btn btn-ghost"
-
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                    >
-                      {/* {isSubmitting ? (
-                        <>
-                          <span className="loading loading-spinner loading-sm"></span>
-                          Saving...
-                        </>
-                      ) : (
-                        'Save Product'
-                      )} */}
-                    </button>
-                  </div>
-                </form>
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {products.length === 0 ? (
+        <p className="text-gray-600">No products yet—add one to start tracking votes!</p>
+      ) : (
+        products.map((product) => (
+          <div key={product.id} className="card bg-white shadow-lg p-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">{product.name}</h2>
+            {product.Plan.map((plan) => (
+              <div key={plan.id} className="mb-6">
+                <p className="text-lg font-semibold text-gray-700">{plan.name} - ${plan.price}</p>
+                <div className="h-48 mt-2">
+                  <Bar data={getChartData(plan)} options={chartOptions} />
+                </div>
+                <div className="mt-4">
+                  <p className="text-sm text-gray-600">Total Votes: {plan.Vote.length}</p>
+                  <p className="text-sm font-semibold text-gray-800 mt-2">Recommendation:</p>
+                  <p className="text-sm text-gray-700">{getRecommendation(plan)}</p>
+                </div>
               </div>
-            </div>
-
-          {/* Product List */}
-          {/* <ProductList userId={findUserInDB.id} /> */}
-        </div>
-      </div>
+            ))}
+          </div>
+        ))
+      )}
     </div>
   );
 }

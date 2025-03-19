@@ -31,9 +31,9 @@ export function AppSidebar() {
   return (
     <Sidebar 
       side="left" 
-      className="bg-sidebar text-white border-r border-border w-64 transition-all duration-300"
+      className="bg-sidebar border-r border-border w-64 transition-all duration-300"
     >
-      <SidebarHeader className="px-6 py-4 text-white">
+      <SidebarHeader className="px-6 py-4">
         <div className="flex items-center gap-2">
           <h1 className="text-lg font-bold">
             PricePulse
@@ -41,7 +41,7 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-3 py-4 bg-sidebar text-white">
+      <SidebarContent className="px-3 py-4 bg-sidebar">
         <SidebarMenu>
           {MenuItems.map((menuItem) => (
             <SidebarMenuItem key={menuItem.label}>

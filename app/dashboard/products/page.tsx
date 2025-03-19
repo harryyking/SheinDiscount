@@ -55,7 +55,7 @@ export default function ProductForm() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="card bg-white max-w-2xl mx-auto">
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         {/* Product Name */}
         <div>

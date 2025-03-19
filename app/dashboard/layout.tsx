@@ -14,9 +14,9 @@ const Dashboardlayout = ({
   return (
     <SidebarProvider>
             <AppSidebar />
-            <SidebarInset>
+            <SidebarInset className="bg-base-200">
                 
-            <main className='px-4 max-w-4xl mx-auto overflow-hidden'>
+            <main className='px-4 max-w-4xl mx-auto overflow-hidden min-h-screen'>
                     {children}
                 
             </main>
