@@ -76,11 +76,10 @@ const Register = () => {
                   className="pl-10"
                 />
               </div>
-              <Button 
-                className="w-full font-medium" 
+              <button 
+                className="btn btn-primary btn-lg w-full font-medium" 
                 type="submit" 
                 disabled={isLoading} 
-                size="lg"
               >
                 {isLoading ? (
                   <>
@@ -93,24 +92,19 @@ const Register = () => {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </>
                 )}
-              </Button>
+              </button>
             </form>
 
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="divider w-full" />
-              </div>
+           
+            
               <div className="relative flex justify-center text-sm">
                 <span className=" px-2 text-gray-500">Or continue with</span>
               </div>
-            </div>
 
-            <Button
-              className="w-full font-medium"
-              variant="outline"
+            <button
+              className="btn btn-primary btn-lg not-first:w-full font-medium"
               onClick={handleSignInGoogle}
               disabled={googleIsLoading}
-              size="lg"
             >
               {googleIsLoading ? (
                 <>
@@ -140,7 +134,7 @@ const Register = () => {
                   Continue with Google
                 </>
               )}
-            </Button>
+            </button>
           </CardContent>
           
           <CardFooter className="flex flex-col text-center text-sm text-gray-500">

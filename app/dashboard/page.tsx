@@ -39,7 +39,7 @@ export default function DashboardPage() {
         <div className="p-4">
           <h2 className="text-xl font-bold">Price Tester</h2>
         </div>
-        <ul className="menu p-4 text-base-content">
+        <ul className="menu p-4 text-base-content w-full">
           <li>
             <Link href="/dashboard" className="active">
               Dashboard

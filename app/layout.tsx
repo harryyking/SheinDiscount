@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Be_Vietnam_Pro } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Provider from "@/components/Provider";
 
-const brandFont = Be_Vietnam_Pro({subsets: ["latin"], weight: ["100", "200", "500", "700"]})
+const brandFont = Inter({subsets: ["latin"]})
 
 export const metadata: Metadata = {
   title: "WhatsLearn",
