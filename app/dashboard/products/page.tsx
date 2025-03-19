@@ -55,7 +55,7 @@ export default function ProductForm() {
   };
 
   return (
-    <div className="card p-4 bg-white mx-auto min-h-screen">
+    <div className="card p-4 bg-white">
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         {/* Product Name */}
         <div>
@@ -65,20 +65,20 @@ export default function ProductForm() {
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
             placeholder="e.g., Wireless Earbuds"
-            className="input input-bordered w-full mt-2 text-base"
+            className="input border w-full mt-2 text-base"
             required
           />
         </div>
 
         {/* Product URL */}
-        <div>
+        <div >
           <label className="text-lg font-semibold text-gray-700">Website URL</label>
           <input
             type="url"
             value={productUrl}
             onChange={(e) => setProductUrl(e.target.value)}
             placeholder="e.g., https://your-site.com"
-            className="input w-full mt-2 text-base"
+            className="input border w-full mt-2 text-base"
             required
           />
         </div>
@@ -93,7 +93,7 @@ export default function ProductForm() {
                 value={plan.name}
                 onChange={(e) => updatePlan(index, "name", e.target.value)}
                 placeholder="e.g., Basic"
-                className="input w-1/2 text-base"
+                className="input border w-1/2 text-base"
                 required
               />
               <input
@@ -101,7 +101,7 @@ export default function ProductForm() {
                 value={plan.price || ""}
                 onChange={(e) => updatePlan(index, "price", e.target.value)}
                 placeholder="e.g., 29"
-                className="input w-1/2 text-base"
+                className="input border w-1/2 text-base"
                 min="0"
                 step="0.01"
                 required
@@ -133,7 +133,7 @@ export default function ProductForm() {
               <input
                 value={`<script src="http://localhost:3000/widget.js" data-plan-id="${plan.id}"></script>`}
                 readOnly
-                className="input w-full mt-2 text-sm"
+                className="input border w-full mt-2 text-sm"
               />
               <button
                 onClick={() => navigator.clipboard.writeText(`<script src="http://localhost:3000/widget.js" data-plan-id="${plan.id}"></script>`)}

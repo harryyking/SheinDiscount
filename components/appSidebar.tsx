@@ -31,7 +31,7 @@ export function AppSidebar() {
   return (
     <Sidebar 
       side="left" 
-      className="bg-sidebar border-r border-border w-64 transition-all duration-300"
+      className="bg-white border-r border-border w-64 transition-all duration-300"
     >
       <SidebarHeader className="px-6 py-4">
         <div className="flex items-center gap-2">
