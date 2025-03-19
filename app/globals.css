@@ -6,7 +6,6 @@
   themes: light --default, dark --prefersdark;
 }
 
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
