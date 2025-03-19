@@ -3,7 +3,7 @@
 @plugin "tailwindcss-animate";
 
 @plugin "daisyui"{
-  themes: light --default, dark --prefersdark, forest;
+  themes: light --default, dark --prefersdark, emerald;
 }
 
 @custom-variant dark (&:is(.dark *));
