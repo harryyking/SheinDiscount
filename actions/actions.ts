@@ -115,3 +115,12 @@ export async function getVotesForPlan(planId: string) {
     return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
   }
 }
+
+
+export async function getUserProducts(userId: string) {
+    const products = await prisma.product.findMany({
+      where: { userId },
+      include: { Plan: { include: { Vote: true } } },
+    });
+    return { success: true, products };
+  }
