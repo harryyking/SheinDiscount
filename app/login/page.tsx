@@ -77,7 +77,7 @@ const Register = () => {
                 />
               </div>
               <button 
-                className="btn btn-primary btn-lg w-full font-medium" 
+                className="btn btn-primary w-full font-medium" 
                 type="submit" 
                 disabled={isLoading} 
               >
@@ -102,7 +102,7 @@ const Register = () => {
               </div>
 
             <button
-              className="btn btn-primary btn-lg not-first:w-full font-medium"
+              className="btn btn-outline not-first:w-full font-medium"
               onClick={handleSignInGoogle}
               disabled={googleIsLoading}
             >
