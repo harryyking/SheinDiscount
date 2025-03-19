@@ -4,33 +4,33 @@ import prisma from '@/lib/db';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
 
-export default async function DashboardPage() {
+export default function DashboardPage() {
  
-  const session = await getServerSession(authOptions)
-  const userEmail = session?.user.email
-  const findUserInDB = await prisma.user.findUnique({
-    where:{email: userEmail},
-    select: {id : true}
-  })
+  // const session = await getServerSession(authOptions)
+  // const userEmail = session?.user.email
+  // const findUserInDB = await prisma.user.findUnique({
+  //   where:{email: userEmail},
+  //   select: {id : true}
+  // })
 
 
-  if (!findUserInDB) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body">
-            <h2 className="card-title">Authentication Required</h2>
-            <p>Please log in to access the dashboard.</p>
-            <div className="card-actions justify-end mt-4">
-              <Link href="/login" className="btn btn-primary">
-                Log In
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (!findUserInDB) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen">
+  //       <div className="card bg-base-100 shadow-xl">
+  //         <div className="card-body">
+  //           <h2 className="card-title">Authentication Required</h2>
+  //           <p>Please log in to access the dashboard.</p>
+  //           <div className="card-actions justify-end mt-4">
+  //             <Link href="/login" className="btn btn-primary">
+  //               Log In
+  //             </Link>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex min-h-screen bg-base-200">
@@ -143,7 +143,7 @@ export default async function DashboardPage() {
             </div>
 
           {/* Product List */}
-          <ProductList userId={findUserInDB.id} />
+          {/* <ProductList userId={findUserInDB.id} /> */}
         </div>
       </div>
     </div>
