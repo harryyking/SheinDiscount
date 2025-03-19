@@ -1,40 +1,86 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl =  env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String  @map("user_id")
+  type               String
+  provider           String
+  providerAccountId  String  @map("provider_account_id")
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("sessions")
 }
 
 model User {
   id            String    @id @default(cuid())
+  name          String?
   email         String    @unique
-  phone         String    @unique
-  topic         String
-  schedule      String    @default("08:00") // Time to send daily lessons
-  subscribed    Boolean   @default(true)
+  emailVerified DateTime?
+  isVerified    Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  lastPayment   DateTime  @default(now())
-  subscriptionId String?  // Flutterwave subscription ID
-  dailyRepliesUsed Int    @default(0)
-  lastReplyReset DateTime @default(now())
-  lessons       Lesson[]
+  Session       Session[]
+  Account       Account[]
+  Product       Product[]
 }
 
-model Lesson {
-  id        String   @id @default(cuid())
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Product {
+  id        String    @id @default(cuid())
   userId    String
-  content   String   @db.Text
-  type      String   @default("lesson") // "lesson", "quiz", or "reply"
+  name      String
+  url       String
+  
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  Plan      Plan[]    // One-to-many relation with Plan
+}
+
+model Plan {
+  id        String    @id @default(cuid())
+  productId String
+  name      String    // e.g., "Basic", "Pro", "Enterprise"
+  price     Float
+  createdAt DateTime  @default(now())
+  product   Product   @relation(fields: [productId], references: [id])
+  Vote      Vote[]    // Votes tied to specific plans
+}
+
+model Vote {
+  id        String   @id @default(cuid())
+  planId    String   // Changed to reference Plan instead of Product
+  value     String   @default("too_high") // "too_high", "just_right", "a_steal"
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan      Plan     @relation(fields: [planId], references: [id])
 }
