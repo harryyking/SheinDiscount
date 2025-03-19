@@ -30,7 +30,7 @@ interface Props {
   products: Product[];
 }
 
-export default function DashboardContent({ products }: Props) {
+const Dashboardpage = ({ products }: Props) => {
   // Recommendation logic based on votes
   const getRecommendation = (plan: Plan): string => {
     const votes = plan.Vote;
@@ -104,3 +104,5 @@ export default function DashboardContent({ products }: Props) {
     </div>
   );
 }
+
+export default Dashboardpage
