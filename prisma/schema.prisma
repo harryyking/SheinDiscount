@@ -69,7 +69,7 @@ model Product {
 
 model Plan {
   id        String    @id @default(cuid())
-  productId String
+  productId String    
   name      String    // e.g., "Basic", "Pro", "Enterprise"
   price     Float
   createdAt DateTime  @default(now())

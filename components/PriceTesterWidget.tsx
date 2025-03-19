@@ -1,11 +1,13 @@
 "use client";
 
-import { addVotes, getProduct, getVotesForProduct } from "@/actions/actions";
+import { addVotes, getVotesForPlan } from "@/actions/actions"; // Only import client-used actions
 import React, { useState, useEffect } from "react";
 
 interface PriceTesterWidgetProps {
-  productId: string;
-  showResults?: boolean; // Optional prop to show results immediately
+  planId: string; // Changed from productId to planId
+  initialProduct: { id: string; name: string; url: string; Plan: { id: string; name: string; price: number }[] }; // From server
+  initialVoteCounts: { too_high: number; just_right: number; a_steal: number; total: number }; // From server
+  showResults?: boolean;
 }
 
 interface VoteCounts {
@@ -16,72 +18,34 @@ interface VoteCounts {
 }
 
 const PriceTesterWidget: React.FC<PriceTesterWidgetProps> = ({
-  productId,
+  planId,
+  initialProduct,
+  initialVoteCounts,
   showResults = false,
 }) => {
-  const [product, setProduct] = useState<{
-    id: string;
-    name: string;
-  } | null>(null);
+  const [product] = useState(initialProduct);
+  const [plan] = useState(initialProduct.Plan.find((p) => p.id === planId) || null); // Specific plan
   const [hasVoted, setHasVoted] = useState(false);
-  const [voteCounts, setVoteCounts] = useState<VoteCounts>({
-    too_high: 0,
-    just_right: 0,
-    a_steal: 0,
-    total: 0,
-  });
-  const [isLoading, setIsLoading] = useState(true);
+  const [voteCounts, setVoteCounts] = useState<VoteCounts>(initialVoteCounts);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch product and vote data on mount
+  // Check for prior vote on mount
   useEffect(() => {
-    const loadData = async () => {
-      setIsLoading(true);
-
-      // Check if user has already voted
-      const storedVote = localStorage.getItem(`vote_${productId}`);
-      if (storedVote) setHasVoted(true);
-
-      // Fetch product
-      const productResponse = await getProduct(productId);
-      if (productResponse.success && productResponse.product) {
-        setProduct(productResponse.product);
-      } else {
-        setError(productResponse.error || "Failed to load product");
-      }
-
-      // Fetch votes
-      const votesResponse = await getVotesForProduct(productId);
-      if (votesResponse.success && votesResponse.voteCounts) {
-        const counts = votesResponse.voteCounts;
-        setVoteCounts({
-          too_high: counts.too_high,
-          just_right: counts.just_right,
-          a_steal: counts.a_steal,
-          total: counts.too_high + counts.just_right + counts.a_steal,
-        });
-      } else {
-        setError(votesResponse.error || "Failed to load votes");
-      }
-
-      setIsLoading(false);
-    };
-
-    loadData();
-  }, [productId]);
+    const storedVote = localStorage.getItem(`vote_${planId}`);
+    if (storedVote) setHasVoted(true);
+  }, [planId]);
 
   // Handle voting
   const handleVote = async (value: "too_high" | "just_right" | "a_steal") => {
     try {
-      const response = await addVotes({value});
+      const response = await addVotes({ planId, value });
       if (!response.success) throw new Error(response.error || "Failed to submit vote");
 
-      // Store vote in localStorage to prevent multiple votes
-      localStorage.setItem(`vote_${productId}`, value);
+      localStorage.setItem(`vote_${planId}`, value);
       setHasVoted(true);
 
       // Refresh vote counts
-      const votesResponse = await getVotesForProduct(productId);
+      const votesResponse = await getVotesForPlan(planId);
       if (votesResponse.success && votesResponse.voteCounts) {
         const counts = votesResponse.voteCounts;
         setVoteCounts({
@@ -97,21 +61,10 @@ const PriceTesterWidget: React.FC<PriceTesterWidgetProps> = ({
     }
   };
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-24">
-        <span className="loading loading-spinner loading-md"></span>
-      </div>
-    );
+  // Error state (no loading since data is pre-fetched)
+  if (error || !product || !plan) {
+    return <div className="text-error">{error || "Plan not found"}</div>;
   }
-
-  // Error state
-  if (error || !product) {
-    return <div className="text-error">{error || "Product not found"}</div>;
-  }
-
-  // Format plan name for display
 
   return (
     <div className="card bg-base-100 shadow-xl max-w-sm">
@@ -119,32 +72,23 @@ const PriceTesterWidget: React.FC<PriceTesterWidgetProps> = ({
         <h2 className="card-title text-center">
           {hasVoted || showResults ? "Price Feedback Results" : "How does this price feel?"}
         </h2>
-        {/* <p className="text-center text-xl font-bold">
-          {planDisplay} - ${product.price.toFixed(2)}
-          {product.plan === "PRO" && <span className="badge badge-accent ml-2">Pro</span>}
-          {product.plan === "ENTERPRISE" && (
+        <p className="text-center text-xl font-bold">
+          {plan.name} - ${plan.price.toFixed(2)}
+          {plan.name.toLowerCase() === "pro" && <span className="badge badge-accent ml-2">Pro</span>}
+          {plan.name.toLowerCase() === "enterprise" && (
             <span className="badge badge-primary ml-2">Enterprise</span>
           )}
-        </p> */}
+        </p>
 
         {!hasVoted && !showResults ? (
           <div className="flex flex-col gap-2 mt-2">
-            <button
-              className="btn btn-error"
-              onClick={() => handleVote("too_high")}
-            >
+            <button className="btn btn-error" onClick={() => handleVote("too_high")}>
               Too High
             </button>
-            <button
-              className="btn btn-success"
-              onClick={() => handleVote("just_right")}
-            >
+            <button className="btn btn-success" onClick={() => handleVote("just_right")}>
               Just Right
             </button>
-            <button
-              className="btn btn-primary"
-              onClick={() => handleVote("a_steal")}
-            >
+            <button className="btn btn-primary" onClick={() => handleVote("a_steal")}>
               A Steal!
             </button>
           </div>
@@ -192,9 +136,7 @@ const PriceTesterWidget: React.FC<PriceTesterWidgetProps> = ({
               max={voteCounts.total || 1}
             ></progress>
 
-            <div className="text-center text-sm mt-3">
-              Total votes: {voteCounts.total}
-            </div>
+            <div className="text-center text-sm mt-3">Total votes: {voteCounts.total}</div>
           </div>
         )}
       </div>

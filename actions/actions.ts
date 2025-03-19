@@ -5,26 +5,41 @@ import { getServerSession } from "next-auth";
 
 // Types
 type CreateProductParams = {
-  userId: string;
   name: string;
   url: string;
-  price: number;
-  plan?: "BASIC" | "PRO" | "ENTERPRISE"; // Optional, defaults to BASIC in schema
+  plans: { name: string; price: number }[]; // Array of plans (e.g., [{ name: "Basic", price: 49 }])
 };
 
 type AddVoteParams = {
+  planId: string; // Now uses planId instead of productId
   value: "too_high" | "just_right" | "a_steal";
 };
 
 // Create Product
 export async function createProduct(params: CreateProductParams) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user.email) throw new Error("Unauthorized");
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { id: true },
+    });
+    if (!user) throw new Error("User not found");
+
     const product = await prisma.product.create({
       data: {
-        userId: params.userId,
+        userId: user.id,
         name: params.name,
         url: params.url,
+        Plan: {
+          create: params.plans.map((plan) => ({
+            name: plan.name,
+            price: plan.price,
+          })),
+        },
       },
+      include: { Plan: true }, // Return created plans
     });
     return { success: true, product };
   } catch (error) {
@@ -34,24 +49,20 @@ export async function createProduct(params: CreateProductParams) {
 }
 
 // Add Vote
-export async function addVotes(params: any) {
+export async function addVotes(params: AddVoteParams) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
+    if (!session) throw new Error("Unauthorized");
 
-    if(!session) throw new Error("Unathorized")
-
-    const userEmail = session.user.email
-
-    const productId = await prisma.user.findUnique({
-        where: {email: userEmail},
-        select: {id: true}
-    })
-
-    if(!productId) throw new Error("Cannot find ProductID")
+    // Verify the plan exists
+    const plan = await prisma.plan.findUnique({
+      where: { id: params.planId },
+    });
+    if (!plan) throw new Error("Plan not found");
 
     const vote = await prisma.vote.create({
       data: {
-       productId: productId.id,
+        planId: params.planId,
         value: params.value,
       },
     });
@@ -62,12 +73,19 @@ export async function addVotes(params: any) {
   }
 }
 
-// Get Product
+// Get Product (with Plans)
 export async function getProduct(productId: string) {
   try {
     const product = await prisma.product.findUnique({
       where: { id: productId },
-      select: { id: true, name: true, url: true},
+      select: {
+        id: true,
+        name: true,
+        url: true,
+        Plan: {
+          select: { id: true, name: true, price: true },
+        },
+      },
     });
     if (!product) throw new Error("Product not found");
     return { success: true, product };
@@ -77,11 +95,11 @@ export async function getProduct(productId: string) {
   }
 }
 
-// Get Votes for Product
-export async function getVotesForProduct(productId: string) {
+// Get Votes for Plan (Updated to use planId)
+export async function getVotesForPlan(planId: string) {
   try {
     const votes = await prisma.vote.findMany({
-      where: { productId },
+      where: { planId },
       select: { value: true, createdAt: true },
     });
     const voteCounts = votes.reduce(
