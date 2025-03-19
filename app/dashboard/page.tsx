@@ -34,39 +34,6 @@ export default function DashboardPage() {
 
   return (
     <div className="flex min-h-screen bg-base-200">
-      {/* Sidebar */}
-      <div className="w-64 bg-base-100 shadow-lg">
-        <div className="p-4">
-          <h2 className="text-xl font-bold">Price Tester</h2>
-        </div>
-        <ul className="menu p-4 text-base-content w-full">
-          <li>
-            <Link href="/dashboard" className="active">
-              Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link href="/dashboard/products">
-              My Products
-            </Link>
-          </li>
-          <li>
-            <Link href="/dashboard/analytics">
-              Analytics
-            </Link>
-          </li>
-          <li>
-            <Link href="/dashboard/settings">
-              Settings
-            </Link>
-          </li>
-          <li>
-            <button>
-              Sign Out
-            </button>
-          </li>
-        </ul>
-      </div>
 
       {/* Main Content */}
       <div className="flex-1 p-8">
