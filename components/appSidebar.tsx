@@ -54,7 +54,7 @@ export function AppSidebar() {
                     "hover:opacity-100",
                     "group relative",
                     pathname === menuItem.link && 
-                    "bg-primary font-medium"
+                    "btn-primary font-medium"
                   )}
                 >
                     <span>{menuItem.label}</span>
