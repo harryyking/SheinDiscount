@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import Provider from "@/components/Provider";
 
-const brandFont = Space_Grotesk({subsets: ["latin"]})
+const brandFont = Bricolage_Grotesque({subsets: ["latin"]})
 
 export const metadata: Metadata = {
   title: "WhatsLearn",

@@ -174,7 +174,7 @@ export default function ProductForm() {
               <input
                 type="text"
                 placeholder="e.g., Wireless Earbuds"
-                className={`input input-bordered w-full ${errors.name ? "input-error" : ""}`}
+                className={`input border w-full ${errors.name ? "input-error" : ""}`}
                 {...register("name")}
               />
               {errors.name && (
@@ -195,7 +195,7 @@ export default function ProductForm() {
               <input
                 type="text"
                 placeholder="e.g., https://your-site.com"
-                className={`input input-bordered w-full ${errors.url ? "input-error" : ""}`}
+                className={`input border w-full ${errors.url ? "input-error" : ""}`}
                 {...register("url")}
               />
               {errors.url && (
@@ -235,7 +235,7 @@ export default function ProductForm() {
                     <input
                       type="text"
                       placeholder="Plan name"
-                      className={`input input-bordered w-full ${errors.plans?.[index]?.name ? "input-error" : ""}`}
+                      className={`input border w-full ${errors.plans?.[index]?.name ? "input-error" : ""}`}
                       {...register(`plans.${index}.name`)}
                     />
                     {errors.plans?.[index]?.name && (
@@ -251,7 +251,7 @@ export default function ProductForm() {
                       placeholder="Price"
                       min="0"
                       step="0.01"
-                      className={`input input-bordered w-full ${errors.plans?.[index]?.price ? "input-error" : ""}`}
+                      className={`input border w-full ${errors.plans?.[index]?.price ? "input-error" : ""}`}
                       {...register(`plans.${index}.price`, { valueAsNumber: true })}
                     />
                     {errors.plans?.[index]?.price && (
