@@ -148,11 +148,11 @@ export default function LandingPage() {
           </div>
 
           
-            <div className="space-y-8 grid md:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8 grid md:grid-cols-2 gap-16 items-center justify-center">
               {features.map((feature) => (
                 <div key={feature.title}>
                     <div
-                      className='p-3 rounded-lg  "bg-primary/10 text-primary" : "bg-gray-100 text-gray-600'
+                      className="p-3 rounded-lg  bg-primary/10 text-primary"
                     >
                       {feature.icon}
                     </div>
