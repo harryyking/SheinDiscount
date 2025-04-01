@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import html2canvas from "html2canvas-pro"; // Updated import
 import { usePaystackPayment } from "react-paystack";
+import { Download } from "lucide-react";
 
 interface PaystackProps {
   reference: string;
@@ -87,7 +88,8 @@ export default function ExportButton({
   };
 
   return (
-    <Button onClick={handleClick} disabled={!isClient}>
+    <Button onClick={handleClick} disabled={!isClient} className="flex gap-4">
+      <Download size={24}/>
       Export Graph{" "}
       {exportCount >= FREE_EXPORT_LIMIT
         ? "($1)"
