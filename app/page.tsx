@@ -57,7 +57,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-green-50 to-emerald-50 py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-green-50 to-emerald-50 py-20 overflow-hidden min-h-screen">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-green-400" />
           <div className="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-emerald-400" />
@@ -75,14 +75,11 @@ export default function LandingPage() {
                   Transform your data into stunning visualizations without any technical skills. Upload, customize, and
                   share professional charts in just a few clicks.
                 </p>
-                <div className="mt-8 flex flex-col sm:flex-row gap-4">
                   <Button size="lg" className="text-lg px-8 py-6">
-                    Get Started <ArrowRight className="ml-2 h-5 w-5" />
+                    Start Creating <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
-                  <Button variant="outline" size="lg" className="text-lg px-8 py-6">
-                    View Examples
-                  </Button>
-                </div>
+                  
+                
               </motion.div>
             </div>
 
@@ -275,7 +272,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      
+
       {/* Footer */}
       <footer className="bg-gray-300 text-gray-700 py-12">
         <div className="container mx-auto px-4">
@@ -284,24 +281,9 @@ export default function LandingPage() {
               <h2 className="text-2xl font-bold text-gray-800">Data Viz for Hustlers</h2>
               <p className="mt-2">Beautiful data visualization made simple</p>
             </div>
-            <div className="flex gap-8">
-              <Link href="#" className="hover:text-white transition-colors">
-                Features
-              </Link>
-              <Link href="#" className="hover:text-white transition-colors">
-                Examples
-              </Link>
-              <Link href="#" className="hover:text-white transition-colors">
-                Pricing
-              </Link>
-              <Link href="#" className="hover:text-white transition-colors">
-                Contact
-              </Link>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
+      </div>
             <p>© {new Date().getFullYear()} Data Viz for Hustlers. All rights reserved.</p>
-          </div>
+          
         </div>
       </footer>
     </div>
