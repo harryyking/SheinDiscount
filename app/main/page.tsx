@@ -10,12 +10,7 @@ import ExportButton from "@/components/ExportButton";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { defaultData } from "@/lib/utils";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "App",
-  description: "Create custom graphs from CSV, pasted data, or manual entry - free and easy.",
-};
 
 export default function AppPage() {
   const [csvData, setCsvData] = useState<any[]>(defaultData);
