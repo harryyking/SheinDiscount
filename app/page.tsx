@@ -57,7 +57,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-green-50 to-emerald-50 py-20 overflow-hidden min-h-screen">
+      <section className="relative bg-gradient-to-br from-green-50 to-emerald-50 py-20 overflow-hidden min-h-screen flex justify-center items-center">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-green-400" />
           <div className="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-emerald-400" />
