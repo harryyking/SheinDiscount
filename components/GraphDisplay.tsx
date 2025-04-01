@@ -31,7 +31,7 @@ export default function GraphDisplay({
   data,
   graphType,
   xAxis,
-  yAxis,
+  yAxes, // Changed to array
   title,
   tooltipEnabled,
   backgroundColor,
@@ -41,7 +41,7 @@ export default function GraphDisplay({
   data: any[];
   graphType: "bar" | "line" | "pie";
   xAxis: string;
-  yAxis: string;
+  yAxes: string[]; // Changed to array
   title: string;
   tooltipEnabled: boolean;
   backgroundColor: string;
@@ -49,17 +49,16 @@ export default function GraphDisplay({
   curveEnabled: boolean;
 }) {
   const [themeColors, setThemeColors] = useState({
-    primary: "oklch(0.723 0.219 149.579)", // Light mode --primary
-    foreground: "oklch(0.141 0.005 285.823)", // Light mode --foreground
-    muted: "oklch(0.967 0.001 286.375)", // Light mode --muted
-    chart1: "oklch(0.646 0.222 41.116)", // --chart-1
-    chart2: "oklch(0.6 0.118 184.704)", // --chart-2
-    chart3: "oklch(0.398 0.07 227.392)", // --chart-3
-    chart4: "oklch(0.828 0.189 84.429)", // --chart-4
-    chart5: "oklch(0.769 0.188 70.08)", // --chart-5
+    primary: "oklch(0.723 0.219 149.579)",
+    foreground: "oklch(0.141 0.005 285.823)",
+    muted: "oklch(0.967 0.001 286.375)",
+    chart1: "oklch(0.646 0.222 41.116)",
+    chart2: "oklch(0.6 0.118 184.704)",
+    chart3: "oklch(0.398 0.07 227.392)",
+    chart4: "oklch(0.828 0.189 84.429)",
+    chart5: "oklch(0.769 0.188 70.08)",
   });
 
-  // Fetch theme colors from CSS variables on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
       const root = document.documentElement;
@@ -77,40 +76,26 @@ export default function GraphDisplay({
     }
   }, []);
 
-  if (!data || data.length === 0 || !xAxis || !yAxis) {
+  if (!data || data.length === 0 || !xAxis || yAxes.length === 0) {
     return <p className="text-muted-foreground">No data to display.</p>;
   }
 
   const labels = data.map((row) => row[xAxis]);
-  const values = data.map((row) => {
-    const value = Number(row[yAxis]);
-    return isNaN(value) ? 0 : value;
-  });
+  const datasets = yAxes.map((yAxis, index) => ({
+    label: yAxis,
+    data: data.map((row) => {
+      const value = Number(row[yAxis]);
+      return isNaN(value) ? 0 : value;
+    }),
+    backgroundColor: backgroundColor || themeColors[`chart${index + 1}` as keyof typeof themeColors] || themeColors.primary,
+    borderColor: adjustColor(themeColors[`chart${index + 1}` as keyof typeof themeColors] || themeColors.primary, -0.2),
+    borderWidth: 1,
+    tension: graphType === "line" && curveEnabled ? 0.4 : 0,
+  }));
 
   const chartData = {
     labels,
-    datasets: [
-      {
-        label: yAxis,
-        data: values,
-        backgroundColor:
-          graphType === "pie"
-            ? labels.map((_, i) => {
-                const colors = [
-                  themeColors.chart1,
-                  themeColors.chart2,
-                  themeColors.chart3,
-                  themeColors.chart4,
-                  themeColors.chart5,
-                ];
-                return colors[i % colors.length];
-              })
-            : backgroundColor || themeColors.primary, // Default to --primary
-        borderColor: adjustColor(themeColors.primary, -0.2),
-        borderWidth: 1,
-        tension: graphType === "line" && curveEnabled ? 0.4 : 0,
-      },
-    ],
+    datasets,
   };
 
   const options = {
@@ -125,7 +110,7 @@ export default function GraphDisplay({
       },
       tooltip: { enabled: tooltipEnabled },
       legend: {
-        display: graphType !== "pie",
+        display: true, // Always show legend for multiple datasets
         labels: { color: themeColors.foreground },
       },
     },
@@ -155,10 +140,9 @@ export default function GraphDisplay({
 }
 
 function adjustColor(color: string, amount: number) {
-  // Parse OKLCH color (assuming format "oklch(L C H)")
   const match = color.match(/oklch\(([\d.]+) ([\d.]+) ([\d.]+)\)/);
-  if (!match) return color; // Fallback to original if parsing fails
+  if (!match) return color;
   let [_, l, c, h] = match.map(Number);
-  l = Math.min(1, Math.max(0, l + amount)); // Adjust lightness
+  l = Math.min(1, Math.max(0, l + amount));
   return `oklch(${l} ${c} ${h})`;
 }
