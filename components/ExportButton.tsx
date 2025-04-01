@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro"; // Updated import
 import { usePaystackPayment } from "react-paystack";
 
-// Define PaystackProps type
 interface PaystackProps {
   reference: string;
   email: string;
@@ -22,14 +21,9 @@ export default function ExportButton({
 }) {
   const [exportCount, setExportCount] = useState(0);
   const [isClient, setIsClient] = useState(false);
-  const [initializePayment, setInitializePayment] = useState<((options: {
-    onSuccess: (response: any) => void;
-    onClose: () => void;
-  }) => void) | null>(null); // Store the payment function
   const FREE_EXPORT_LIMIT = 3;
   const PAYMENT_AMOUNT = 100; // $1 = 100 cents (USD)
 
-  // Load export count and initialize client-side check
   useEffect(() => {
     setIsClient(true);
     const storedCount = localStorage.getItem("exportCount");
@@ -38,23 +32,27 @@ export default function ExportButton({
     }
   }, []);
 
-  // Define Paystack config and initialize payment only on client
-  useEffect(() => {
-    if (!isClient) return;
+  const config: PaystackProps = {
+    reference: new Date().getTime().toString(),
+    email: "user@example.com",
+    amount: PAYMENT_AMOUNT,
+    publicKey: "pk_test_your_public_key_here",
+    currency: "USD",
+  };
 
-    const config: PaystackProps = {
-      reference: new Date().getTime().toString(),
-      email: "user@example.com", // Replace with dynamic email
-      amount: PAYMENT_AMOUNT,
-      publicKey: "pk_test_your_public_key_here", // Replace with your key
-      currency: "USD", // Assuming USD support
-    };
+  const onSuccess = (response: any) => {
+    console.log("Payment successful:", response);
+    handleExport();
+    alert("Payment successful! Graph exported.");
+  };
 
-    // Set the initializePayment function once we're on the client
-    setInitializePayment(() => usePaystackPayment(config));
-  }, [isClient]);
+  const onClose = () => {
+    console.log("Payment modal closed");
+    alert("Payment cancelled.");
+  };
 
-  // Export graph as PNG
+  const initializePayment = usePaystackPayment(config);
+
   const handleExport = () => {
     if (!isClient || !graphRef.current) {
       alert("No graph available to export.");
@@ -70,13 +68,12 @@ export default function ExportButton({
       })
       .catch((error) => {
         console.error("Export failed:", error);
-        alert("Failed to export graph.");
+        alert("Failed to export graph. Please try again.");
       });
   };
 
-  // Handle export button click
   const handleClick = () => {
-    if (!isClient || !initializePayment) return; // Wait for client and payment setup
+    if (!isClient) return;
 
     const newCount = exportCount + 1;
     setExportCount(newCount);
@@ -85,24 +82,12 @@ export default function ExportButton({
     if (newCount <= FREE_EXPORT_LIMIT) {
       handleExport();
     } else {
-      // Define callbacks and trigger payment on click
-      const onSuccess = (response: any) => {
-        console.log("Payment successful:", response);
-        handleExport();
-        alert("Payment successful! Graph exported.");
-      };
-
-      const onClose = () => {
-        console.log("Payment modal closed");
-        alert("Payment cancelled.");
-      };
-
       initializePayment({ onSuccess, onClose });
     }
   };
 
   return (
-    <Button onClick={handleClick} disabled={!isClient || !initializePayment}>
+    <Button onClick={handleClick} disabled={!isClient}>
       Export Graph{" "}
       {exportCount >= FREE_EXPORT_LIMIT
         ? "($1)"

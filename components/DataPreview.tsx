@@ -21,7 +21,7 @@ export default function DataPreview({ data }: { data: any[] }) {
         <TableHeader>
           <TableRow>
             {columns.map((col) => (
-              <TableHead key={col}>{col}</TableHead>
+              <TableHead key={col} className="text-lg font-semibold">{col}</TableHead>
             ))}
           </TableRow>
         </TableHeader>

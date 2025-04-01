@@ -22,6 +22,7 @@ export default function AppPage() {
     tooltipEnabled: boolean
     backgroundColor: string
     gridEnabled: boolean
+    curveEnabled: boolean
   }>({
     graphType: "bar",
     xAxis: "Date",
@@ -30,6 +31,7 @@ export default function AppPage() {
     tooltipEnabled: true,
     backgroundColor: "#4bc0c0",
     gridEnabled: true,
+    curveEnabled: true, // New default
   })
   const graphRef = useRef<HTMLDivElement>(null)
 
@@ -54,6 +56,7 @@ export default function AppPage() {
       tooltipEnabled: true,
       backgroundColor: "#4bc0c0",
       gridEnabled: true,
+      curveEnabled: true
     })
   }
 
@@ -61,7 +64,13 @@ export default function AppPage() {
     <main className="flex min-h-screen flex-col items-center p-4">
       <h1 className="text-3xl font-bold text-gray-800 mt-4 mb-8">Data Viz for Hustlers</h1>
 
+      
+
       <div className="w-full max-w-6xl flex flex-col gap-10">
+      <div className="absolute top-0 right-0">
+            <DynamicExportButton graphRef={graphRef} />
+          </div>
+
         {/* Graph Options - First */}
         <section className="w-full">
           <GraphOptions data={csvData} onOptionsChange={setGraphOptions} />
@@ -70,9 +79,6 @@ export default function AppPage() {
         {/* Graph Display */}
         <section className="w-full relative">
           <h2 className="text-xl font-semibold mb-4">Graph Display</h2>
-          <div className="absolute top-0 right-0">
-            <DynamicExportButton graphRef={graphRef} />
-          </div>
           <div ref={graphRef}>
             <GraphDisplay
               data={csvData}
@@ -83,6 +89,7 @@ export default function AppPage() {
               tooltipEnabled={graphOptions.tooltipEnabled}
               backgroundColor={graphOptions.backgroundColor}
               gridEnabled={graphOptions.gridEnabled}
+              curveEnabled={graphOptions.curveEnabled}
             />
           </div>
         </section>
