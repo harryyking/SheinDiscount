@@ -147,8 +147,8 @@ export default function LandingPage() {
             </p>
           </div>
 
-          
-            <div className="space-y-8 grid md:grid-cols-2 gap-16 items-center justify-center">
+          <div className="flex items-center justify-center">
+            <div className="space-y-8 grid md:grid-cols-2 gap-16">
               {features.map((feature) => (
                 <div key={feature.title}>
                     <div
@@ -163,6 +163,8 @@ export default function LandingPage() {
                   </div>
               ))}
             </div>
+
+          </div>
         </div>
       </section>
 
