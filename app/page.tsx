@@ -57,7 +57,10 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-green-50 to-emerald-50 py-20 overflow-hidden min-h-screen flex justify-center items-center">
+      
+      <section className="min-h-screen">
+
+      <div className="relative bg-gradient-to-br from-green-50 to-emerald-50 py-20 overflow-hidden  flex justify-center items-center">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-green-400" />
           <div className="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-emerald-400" />
@@ -102,10 +105,10 @@ export default function LandingPage() {
             </motion.div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Stats Section */}
-      <section className="bg-white py-12 border-y border-gray-100">
+      <div className="bg-white py-12 border-y border-gray-100">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="space-y-2">
@@ -126,6 +129,7 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+      </div>
       </section>
 
       {/* Features Section */}
@@ -274,17 +278,22 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-300 text-gray-700 py-12">
+      <footer className="bg-gray-200 text-gray-500 py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0">
-              <h2 className="text-2xl font-bold text-gray-800">Data Viz for Hustlers</h2>
+              <h2 className="text-2xl font-bold text-gray-500">Data Viz for Hustlers</h2>
               <p className="mt-2">Beautiful data visualization made simple</p>
             </div>
-      </div>
-            <p>© {new Date().getFullYear()} Data Viz for Hustlers. All rights reserved.</p>
+
+            <div>
+              <h2>info@graphcraft.com</h2>
+            </div>
+            
+          </div>
           
         </div>
+            <p className="text-center">© {new Date().getFullYear()} Data Viz for Hustlers. All rights reserved.</p>
       </footer>
     </div>
   )
