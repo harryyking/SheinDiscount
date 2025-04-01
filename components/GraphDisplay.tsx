@@ -34,6 +34,7 @@ export default function GraphDisplay({
   title,
   tooltipEnabled,
   backgroundColor,
+  gridEnabled,
 }: {
   data: any[];
   graphType: "bar" | "line" | "pie";
@@ -42,6 +43,7 @@ export default function GraphDisplay({
   title: string;
   tooltipEnabled: boolean;
   backgroundColor: string;
+  gridEnabled: boolean;
 }) {
   if (!data || data.length === 0 || !xAxis || !yAxis) {
     return <p className="text-gray-500">No data to display.</p>;
@@ -82,7 +84,8 @@ export default function GraphDisplay({
     scales:
       graphType !== "pie"
         ? {
-            y: { beginAtZero: true },
+            x: { grid: { display: gridEnabled } },
+            y: { beginAtZero: true, grid: { display: gridEnabled } },
           }
         : undefined,
   };
@@ -96,7 +99,6 @@ export default function GraphDisplay({
   );
 }
 
-// Helper to adjust color brightness
 function adjustColor(color: string, amount: number) {
   const hex = color.replace("#", "");
   const num = parseInt(hex, 16);

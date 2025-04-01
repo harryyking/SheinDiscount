@@ -8,12 +8,17 @@ import GraphDisplay from "@/components/GraphDisplay";
 import DataPreview from "@/components/DataPreview";
 import ExportButton from "@/components/ExportButton";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { defaultData } from "@/lib/utils";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "App",
+  description: "Create custom graphs from CSV, pasted data, or manual entry - free and easy.",
+};
 
 export default function AppPage() {
-  const [csvData, setCsvData] = useState<any[]>([]);
+  const [csvData, setCsvData] = useState<any[]>(defaultData);
   const [graphOptions, setGraphOptions] = useState<{
     graphType: "bar" | "line" | "pie";
     xAxis: string;
@@ -21,49 +26,73 @@ export default function AppPage() {
     title: string;
     tooltipEnabled: boolean;
     backgroundColor: string;
+    gridEnabled: boolean;
   }>({
     graphType: "bar",
-    xAxis: "",
-    yAxis: "",
-    title: "My Graph",
+    xAxis: "Date",
+    yAxis: "Sales",
+    title: "Sample Sales Data",
     tooltipEnabled: true,
     backgroundColor: "#4bc0c0",
+    gridEnabled: true,
   });
   const graphRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const storedData = localStorage.getItem("csvData");
-    if (storedData) setCsvData(JSON.parse(storedData));
+    if (storedData) {
+      setCsvData(JSON.parse(storedData));
+    } else {
+      localStorage.setItem("csvData", JSON.stringify(defaultData));
+    }
   }, []);
 
   const handleClearData = () => {
     localStorage.removeItem("csvData");
-    setCsvData([]);
-    setGraphOptions({ ...graphOptions, xAxis: "", yAxis: "" });
+    setCsvData(defaultData);
+    setGraphOptions({
+      ...graphOptions,
+      xAxis: "Date",
+      yAxis: "Sales",
+      title: "Sample Sales Data",
+    });
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 gap-8 bg-gray-50">
-      <h1 className="text-3xl font-bold text-gray-800">
+    <main className="flex min-h-screen flex-col items-center p-4 gap-8 bg-gray-50">
+      <h1 className="text-3xl font-bold text-gray-800 mt-4">
         Data Viz for Hustlers
       </h1>
-      <Tabs defaultValue="upload" className="w-full max-w-md">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="upload">Upload/Paste</TabsTrigger>
-          <TabsTrigger value="manual">Manual Entry</TabsTrigger>
-        </TabsList>
-        <TabsContent value="upload">
-          <CsvUploader onDataLoaded={setCsvData} />
-        </TabsContent>
-        <TabsContent value="manual">
-          <ManualEntry onDataLoaded={setCsvData} />
-        </TabsContent>
-      </Tabs>
-      {csvData.length > 0 ? (
-        <div className="w-full max-w-4xl flex flex-col gap-6">
-          <DataPreview data={csvData} />
-          <GraphOptions data={csvData} onOptionsChange={setGraphOptions} />
-          <Card className="p-4 w-full">
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Column: Inputs and Data Preview */}
+        <div className="flex flex-col gap-6">
+          <Card className="p-4">
+            <h2 className="text-xl font-semibold mb-2">Data Input</h2>
+            <CsvUploader onDataLoaded={setCsvData} />
+          </Card>
+          <Card className="p-4">
+            <h2 className="text-xl font-semibold mb-2">Manual Entry</h2>
+            <ManualEntry onDataLoaded={setCsvData} />
+          </Card>
+          <Card className="p-4">
+            <h2 className="text-xl font-semibold mb-2">Data Preview</h2>
+            <DataPreview data={csvData} />
+          </Card>
+          <Button variant="destructive" onClick={handleClearData}>
+            Reset to Default
+          </Button>
+        </div>
+        {/* Right Column: Graph Options and Display */}
+        <div className="flex flex-col gap-6">
+          <Card className="p-4">
+            <h2 className="text-xl font-semibold mb-2">Graph Options</h2>
+            <GraphOptions data={csvData} onOptionsChange={setGraphOptions} />
+          </Card>
+          <Card className="p-4 relative">
+            <div className="absolute top-4 right-4">
+              <ExportButton graphRef={graphRef} />
+            </div>
+            <h2 className="text-xl font-semibold mb-2">Graph Preview</h2>
             <div ref={graphRef}>
               <GraphDisplay
                 data={csvData}
@@ -73,19 +102,12 @@ export default function AppPage() {
                 title={graphOptions.title}
                 tooltipEnabled={graphOptions.tooltipEnabled}
                 backgroundColor={graphOptions.backgroundColor}
+                gridEnabled={graphOptions.gridEnabled}
               />
             </div>
           </Card>
-          <div className="flex gap-4 justify-center">
-            <ExportButton graphRef={graphRef} />
-            <Button variant="destructive" onClick={handleClearData}>
-              Clear Data
-            </Button>
-          </div>
         </div>
-      ) : (
-        <p className="text-gray-500">Enter data to get started!</p>
-      )}
+      </div>
     </main>
   );
 }

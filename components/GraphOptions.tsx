@@ -22,6 +22,7 @@ export default function GraphOptions({
     title: string;
     tooltipEnabled: boolean;
     backgroundColor: string;
+    gridEnabled: boolean;
   }) => void;
 }) {
   const [graphType, setGraphType] = useState<"bar" | "line" | "pie">("bar");
@@ -30,6 +31,7 @@ export default function GraphOptions({
   const [title, setTitle] = useState("My Graph");
   const [tooltipEnabled, setTooltipEnabled] = useState(true);
   const [backgroundColor, setBackgroundColor] = useState("#4bc0c0");
+  const [gridEnabled, setGridEnabled] = useState(true);
 
   useEffect(() => {
     if (data.length > 0) {
@@ -48,16 +50,26 @@ export default function GraphOptions({
         title,
         tooltipEnabled,
         backgroundColor,
+        gridEnabled,
       });
     }
-  }, [graphType, xAxis, yAxis, title, tooltipEnabled, backgroundColor, onOptionsChange]);
+  }, [
+    graphType,
+    xAxis,
+    yAxis,
+    title,
+    tooltipEnabled,
+    backgroundColor,
+    gridEnabled,
+    onOptionsChange,
+  ]);
 
   if (!data || data.length === 0) return null;
 
   const columns = Object.keys(data[0]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-3xl">
       <div>
         <label className="block text-sm font-medium mb-1">Graph Type</label>
         <Select
@@ -134,6 +146,21 @@ export default function GraphOptions({
           value={backgroundColor}
           onChange={(e) => setBackgroundColor(e.target.value)}
         />
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-1">Grid</label>
+        <Select
+          value={gridEnabled ? "enabled" : "disabled"}
+          onValueChange={(value) => setGridEnabled(value === "enabled")}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Grid" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="enabled">Enabled</SelectItem>
+            <SelectItem value="disabled">Disabled</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );
