@@ -7,13 +7,8 @@ import GraphDisplay from "@/components/GraphDisplay";
 import DataPreview from "@/components/DataPreview";
 import ExportButton from "@/components/ExportButton";
 import { Card } from "@/components/ui/card";
-import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 
-export const metadata: Metadata = {
-  title: "App",
-  description: "Use our free tool to visualize your CSV data as graphs.",
-};
 
 export default function AppPage() {
   const [csvData, setCsvData] = useState<any[]>([]);
