@@ -152,7 +152,7 @@ export default function LandingPage() {
               {features.map((feature) => (
                 <div key={feature.title}>
                     <div
-                      className="p-3 rounded-full  bg-primary/10 text-primary w-8"
+                      className="p-3 rounded-full  bg-primary/10 text-primary w-12"
                     >
                       {feature.icon}
                     </div>
@@ -167,7 +167,7 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-gray-50">
+      {/* <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900">How It Works</h2>
@@ -201,7 +201,7 @@ export default function LandingPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Example Visualizations */}
       <section className="py-20 bg-white">
