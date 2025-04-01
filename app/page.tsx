@@ -147,21 +147,12 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className={`p-6 rounded-xl transition-all cursor-pointer ${
-                    activeFeature === index ? "bg-primary/5 border border-primary/10 shadow-sm" : "hover:bg-gray-50"
-                  }`}
-                  onClick={() => setActiveFeature(index)}
-                >
-                  <div className="flex items-start gap-4">
+          
+            <div className="space-y-8 grid md:grid-cols-2 gap-16 items-center">
+              {features.map((feature) => (
+                <div key={feature.title}>
                     <div
-                      className={`p-3 rounded-lg ${
-                        activeFeature === index ? "bg-primary/10 text-primary" : "bg-gray-100 text-gray-600"
-                      }`}
+                      className='p-3 rounded-lg  "bg-primary/10 text-primary" : "bg-gray-100 text-gray-600'
                     >
                       {feature.icon}
                     </div>
@@ -170,21 +161,8 @@ export default function LandingPage() {
                       <p className="mt-2 text-gray-600">{feature.description}</p>
                     </div>
                   </div>
-                </div>
               ))}
             </div>
-
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg blur-lg opacity-20" />
-              <div className="relative bg-white p-2 rounded-lg shadow-lg">
-                <img
-                  src={features[activeFeature].image || "/placeholder.svg"}
-                  alt={features[activeFeature].title}
-                  className="rounded w-full"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
