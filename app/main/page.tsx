@@ -6,7 +6,9 @@ import ManualEntry from "@/components/ManualEntry";
 import GraphOptions from "@/components/GraphOptions";
 import GraphDisplay from "@/components/GraphDisplay";
 import DataPreview from "@/components/DataPreview";
-import ExportButton from "@/components/ExportButton";
+import dynamic from "next/dynamic";
+
+const DynamicExportButton = dynamic(() => import("@/components/ExportButton"), { ssr: false });
 import { Button } from "@/components/ui/button";
 import { defaultData } from "@/lib/utils";
 
@@ -84,7 +86,7 @@ export default function AppPage() {
           <GraphOptions data={csvData} onOptionsChange={setGraphOptions} />
           <div className="relative">
             <div className="absolute top-0 right-0">
-              <ExportButton graphRef={graphRef} />
+              <DynamicExportButton graphRef={graphRef} />
             </div>
             <h2 className="text-xl font-semibold mb-2">Graph Display</h2>
             <div ref={graphRef}>
