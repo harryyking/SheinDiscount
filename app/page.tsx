@@ -57,10 +57,9 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      
-      <section className="min-h-screen">
+  
 
-      <div className="relative bg-gradient-to-br from-green-50 to-emerald-50 py-20 overflow-hidden  flex justify-center items-center">
+      <section className="relative bg-gradient-to-br from-green-50 to-emerald-50 py-20 overflow-hidden h-screen  flex justify-center items-center">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-green-400" />
           <div className="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-emerald-400" />
@@ -78,7 +77,7 @@ export default function LandingPage() {
                   Transform your data into stunning visualizations without any technical skills. Upload, customize, and
                   share professional charts in just a few clicks.
                 </p>
-                  <Button size="lg" className="text-lg px-8 py-6">
+                  <Button size="lg" className="text-lg px-8 py-6 mt-4">
                     Start Creating <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                   
@@ -105,10 +104,10 @@ export default function LandingPage() {
             </motion.div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Stats Section */}
-      <div className="bg-white py-12 border-y border-gray-100">
+      <section className="bg-white py-12 border-y border-gray-100">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="space-y-2">
@@ -129,7 +128,6 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </div>
       </section>
 
       {/* Features Section */}
