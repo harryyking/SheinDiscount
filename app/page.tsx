@@ -100,7 +100,7 @@ export default function LandingPage() {
                 <div className="absolute -inset-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg blur-lg opacity-30 animate-pulse" />
                 <div className="relative bg-white p-2 rounded-lg shadow-xl">
                   <img
-                    src="/placeholder.svg?height=400&width=600"
+                    src="https://i.pinimg.com/736x/48/29/1b/48291b35fe06aa6c9d38530da6e04d29.jpg"
                     alt="Data visualization dashboard"
                     className="rounded w-full"
                   />
