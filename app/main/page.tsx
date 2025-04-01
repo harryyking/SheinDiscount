@@ -67,7 +67,7 @@ export default function AppPage() {
       
 
       <div className="w-full max-w-6xl flex flex-col gap-10">
-      <div className="mr-auto">
+      <div className="ml-auto">
             <DynamicExportButton graphRef={graphRef} />
           </div>
 

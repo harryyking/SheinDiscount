@@ -81,7 +81,7 @@ export default function LandingPage() {
                 
                   <Button size="lg" className="px-8 py-6 mt-4">
                     
-                    <Link href="/main " className="text-lg flex gap-4">
+                    <Link href="/main " className="text-lg flex items-center gap-4">
                     Start Creating <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                   </Button>
