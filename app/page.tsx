@@ -285,7 +285,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0">
-              <h2 className="text-2xl font-bold text-gray-500">Data Viz for Hustlers</h2>
+              <h2 className="text-2xl font-bold text-gray-500">GraphCraft</h2>
               <p className="mt-2">Beautiful data visualization made simple</p>
             </div>
 

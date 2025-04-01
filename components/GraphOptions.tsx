@@ -57,7 +57,7 @@ export default function GraphOptions({
     <div className="w-full space-y-6">
       <div>
         <h2 className="text-xl font-semibold mb-4">Graph Options</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-2">
             <Label htmlFor="graph-type">Graph Type</Label>
             <Select value={graphType} onValueChange={(value) => setGraphType(value as "bar" | "line" | "pie")}>
@@ -96,7 +96,7 @@ export default function GraphOptions({
 
       <div>
         <h2 className="text-xl font-semibold mb-4">Graph Styles</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-2">
             <Label htmlFor="color">Background Color</Label>
             <div className="flex items-center gap-2">
