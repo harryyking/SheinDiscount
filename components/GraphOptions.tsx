@@ -54,7 +54,7 @@ export default function GraphOptions({
   }, [graphType, xAxis, yAxis, title, tooltipEnabled, backgroundColor, gridEnabled, curveEnabled, onOptionsChange]);
 
   return (
-    <div className="w-full max-w-4xl grid grid-cols-1 gap-6 md:grid-cols-2">
+    <div className="w-full grid grid-cols-1 gap-6 md:grid-cols-2">
       {/* Left Column */}
       <div className="flex flex-col gap-4">
         {/* Graph Options */}
@@ -142,8 +142,6 @@ export default function GraphOptions({
           />
         </div>
 
-        {/* Graph Styles */}
-        <h2 className="text-xl font-semibold mt-4 md:mt-0">Graph Styles</h2>
         <div className="flex flex-col gap-2">
           <Label htmlFor="color">Background Color</Label>
           <Input
