@@ -31,11 +31,17 @@ export default function GraphDisplay({
   graphType,
   xAxis,
   yAxis,
+  title,
+  tooltipEnabled,
+  backgroundColor,
 }: {
   data: any[];
   graphType: "bar" | "line" | "pie";
   xAxis: string;
   yAxis: string;
+  title: string;
+  tooltipEnabled: boolean;
+  backgroundColor: string;
 }) {
   if (!data || data.length === 0 || !xAxis || !yAxis) {
     return <p className="text-gray-500">No data to display.</p>;
@@ -44,7 +50,7 @@ export default function GraphDisplay({
   const labels = data.map((row) => row[xAxis]);
   const values = data.map((row) => {
     const value = Number(row[yAxis]);
-    return isNaN(value) ? 0 : value; // Handle non-numeric values
+    return isNaN(value) ? 0 : value;
   });
 
   const chartData = {
@@ -55,15 +61,11 @@ export default function GraphDisplay({
         data: values,
         backgroundColor:
           graphType === "pie"
-            ? [
-                "rgba(255, 99, 132, 0.6)",
-                "rgba(54, 162, 235, 0.6)",
-                "rgba(255, 206, 86, 0.6)",
-                "rgba(75, 192, 192, 0.6)",
-                "rgba(153, 102, 255, 0.6)",
-              ]
-            : "rgba(75, 192, 192, 0.6)",
-        borderColor: "rgba(75, 192, 192, 1)",
+            ? labels.map((_, i) =>
+                i % 2 === 0 ? backgroundColor : adjustColor(backgroundColor, 0.2)
+              )
+            : backgroundColor,
+        borderColor: adjustColor(backgroundColor, -0.2),
         borderWidth: 1,
       },
     ],
@@ -72,6 +74,11 @@ export default function GraphDisplay({
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    plugins: {
+      title: { display: true, text: title, font: { size: 18 } },
+      tooltip: { enabled: tooltipEnabled },
+      legend: { display: graphType !== "pie" },
+    },
     scales:
       graphType !== "pie"
         ? {
@@ -87,4 +94,14 @@ export default function GraphDisplay({
       {graphType === "pie" && <Pie data={chartData} options={options} />}
     </div>
   );
+}
+
+// Helper to adjust color brightness
+function adjustColor(color: string, amount: number) {
+  const hex = color.replace("#", "");
+  const num = parseInt(hex, 16);
+  const r = Math.min(255, Math.max(0, (num >> 16) + amount * 255));
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0xff) + amount * 255));
+  const b = Math.min(255, Math.max(0, (num & 0xff) + amount * 255));
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
 }
