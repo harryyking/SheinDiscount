@@ -58,13 +58,12 @@ export default function AppPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-4 bg-gray-50">
+    <main className="flex min-h-screen flex-col items-center p-4">
       <h1 className="text-3xl font-bold text-gray-800 mt-4 mb-8">Data Viz for Hustlers</h1>
 
       <div className="w-full max-w-6xl flex flex-col gap-10">
         {/* Graph Options - First */}
         <section className="w-full">
-          <h2 className="text-xl font-semibold mb-4">Graph Options</h2>
           <GraphOptions data={csvData} onOptionsChange={setGraphOptions} />
         </section>
 
