@@ -36,51 +36,69 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  isVerified    Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  Session       Session[]
-  Account       Account[]
-  Product       Product[]
+  email         String?      @unique
+  emailVerified DateTime?    @db.Timestamptz
+  image         String?
+  role          String       @default("free") // "free" or "insights-subscriber"
+  goals         Goal[]         @relation("GoalCreator")
+  memberships   Membership[]
+  completions   Completion[]
+  invites       Invite[]
+  isPremium     Boolean        @default(false)
+
+
+  Session Session[]
+
+  Account Account[]
 }
 
 model VerificationToken {
   identifier String
   token      String
-  expires    DateTime
+  expires    DateTime @db.Timestamptz
   @@unique([identifier, token])
   @@map("verification_tokens")
 }
 
-model Product {
-  id        String    @id @default(cuid())
+model Goal {
+  id           String         @id @default(cuid())
+  name         String
+  description  String?
+  creatorId    String
+  creator      User           @relation("GoalCreator", fields: [creatorId], references: [id])
+  memberships  Membership[]
+  completions  Completion[]
+  invites      Invite[]
+}
+
+model Membership {
   userId    String
-  name      String
-  url       String
-  
-  createdAt DateTime  @default(now())
-  user      User      @relation(fields: [userId], references: [id])
-  Plan      Plan[]    // One-to-many relation with Plan
+  goalId    String
+  user      User           @relation(fields: [userId], references: [id])
+  goal      Goal           @relation(fields: [goalId], references: [id])
+  joinedAt  DateTime       @default(now())
+  @@id([userId, goalId])
 }
 
-model Plan {
-  id        String    @id @default(cuid())
-  productId String    
-  name      String    // e.g., "Basic", "Pro", "Enterprise"
-  price     Float
-  createdAt DateTime  @default(now())
-  product   Product   @relation(fields: [productId], references: [id])
-  Vote      Vote[]    // Votes tied to specific plans
-}
-
-model Vote {
+model Completion {
   id        String   @id @default(cuid())
-  planId    String   // Changed to reference Plan instead of Product
-  value     String   @default("too_high") // "too_high", "just_right", "a_steal"
+  userId    String
+  goalId    String
+  date      DateTime @db.Date
+  user      User     @relation(fields: [userId], references: [id])
+  goal      Goal     @relation(fields: [goalId], references: [id])
+  @@unique([userId, goalId, date])
+}
+
+model Invite {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  goalId    String
+  creatorId String
   createdAt DateTime @default(now())
-  plan      Plan     @relation(fields: [planId], references: [id])
+  expiresAt DateTime?
+  goal      Goal     @relation(fields: [goalId], references: [id])
+  creator   User     @relation(fields: [creatorId], references: [id])
 }

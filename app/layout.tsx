@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 import Provider from "@/components/Provider";
+import { Toaster } from "react-hot-toast";
 
-const brandFont = Space_Grotesk({subsets: ["latin"]})
+const brandFont = Manrope({subsets: ["latin"]})
 
 export const metadata: Metadata = {
-  title: "PricePulse",
-  description: "Learn with Suzzy",
+  title: "GraphCraft",
+  description: "Make Charts easily with no code",
 };
 
 export default function RootLayout({
@@ -16,13 +17,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme={"emerald"}>
+    <html lang="en" >
       <body
         className={brandFont.className}
       >
         <Provider>
 
         {children}
+        <Toaster position="top-right"/>
         </Provider>
       </body>
     </html>
