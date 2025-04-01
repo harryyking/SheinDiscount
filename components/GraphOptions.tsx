@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function GraphOptions({
   data,
@@ -26,9 +27,9 @@ export default function GraphOptions({
   }) => void;
 }) {
   const [graphType, setGraphType] = useState<"bar" | "line" | "pie">("bar");
-  const [xAxis, setXAxis] = useState<string>("");
-  const [yAxis, setYAxis] = useState<string>("");
-  const [title, setTitle] = useState("My Graph");
+  const [xAxis, setXAxis] = useState<string>("Date");
+  const [yAxis, setYAxis] = useState<string>("Sales");
+  const [title, setTitle] = useState("Sample Sales Data");
   const [tooltipEnabled, setTooltipEnabled] = useState(true);
   const [backgroundColor, setBackgroundColor] = useState("#4bc0c0");
   const [gridEnabled, setGridEnabled] = useState(true);
@@ -64,19 +65,16 @@ export default function GraphOptions({
     onOptionsChange,
   ]);
 
-  if (!data || data.length === 0) return null;
-
-  const columns = Object.keys(data[0]);
-
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-3xl">
-      <div>
-        <label className="block text-sm font-medium mb-1">Graph Type</label>
+    <div className="flex flex-col gap-4 w-full max-w-md">
+      <h2 className="text-xl font-semibold">Graph Options</h2>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="graph-type">Graph Type</Label>
         <Select
           value={graphType}
           onValueChange={(value) => setGraphType(value as "bar" | "line" | "pie")}
         >
-          <SelectTrigger>
+          <SelectTrigger id="graph-type">
             <SelectValue placeholder="Graph Type" />
           </SelectTrigger>
           <SelectContent>
@@ -86,51 +84,42 @@ export default function GraphOptions({
           </SelectContent>
         </Select>
       </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">X-Axis</label>
-        <Select value={xAxis} onValueChange={setXAxis}>
-          <SelectTrigger>
-            <SelectValue placeholder="X-Axis" />
-          </SelectTrigger>
-          <SelectContent>
-            {columns.map((col) => (
-              <SelectItem key={col} value={col}>
-                {col}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Y-Axis</label>
-        <Select value={yAxis} onValueChange={setYAxis}>
-          <SelectTrigger>
-            <SelectValue placeholder="Y-Axis" />
-          </SelectTrigger>
-          <SelectContent>
-            {columns.map((col) => (
-              <SelectItem key={col} value={col}>
-                {col}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Graph Title</label>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="x-axis">X-Axis</Label>
         <Input
+          id="x-axis"
+          value={xAxis}
+          onChange={(e) => setXAxis(e.target.value)}
+          placeholder="e.g., Date"
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="y-axis">Y-Axis</Label>
+        <Input
+          id="y-axis"
+          value={yAxis}
+          onChange={(e) => setYAxis(e.target.value)}
+          placeholder="e.g., Sales"
+        />
+      </div>
+
+      <h2 className="text-xl font-semibold mt-4">Graph Styles</h2>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="title">Graph Title</Label>
+        <Input
+          id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Enter graph title"
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Tooltip</label>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="tooltip">Tooltip</Label>
         <Select
           value={tooltipEnabled ? "enabled" : "disabled"}
           onValueChange={(value) => setTooltipEnabled(value === "enabled")}
         >
-          <SelectTrigger>
+          <SelectTrigger id="tooltip">
             <SelectValue placeholder="Tooltip" />
           </SelectTrigger>
           <SelectContent>
@@ -139,21 +128,22 @@ export default function GraphOptions({
           </SelectContent>
         </Select>
       </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Color</label>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="color">Background Color</Label>
         <Input
+          id="color"
           type="color"
           value={backgroundColor}
           onChange={(e) => setBackgroundColor(e.target.value)}
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Grid</label>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="grid">Grid</Label>
         <Select
           value={gridEnabled ? "enabled" : "disabled"}
           onValueChange={(value) => setGridEnabled(value === "enabled")}
         >
-          <SelectTrigger>
+          <SelectTrigger id="grid">
             <SelectValue placeholder="Grid" />
           </SelectTrigger>
           <SelectContent>

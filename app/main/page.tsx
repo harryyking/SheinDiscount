@@ -7,10 +7,8 @@ import GraphOptions from "@/components/GraphOptions";
 import GraphDisplay from "@/components/GraphDisplay";
 import DataPreview from "@/components/DataPreview";
 import ExportButton from "@/components/ExportButton";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { defaultData } from "@/lib/utils";
-
 
 export default function AppPage() {
   const [csvData, setCsvData] = useState<any[]>(defaultData);
@@ -44,12 +42,16 @@ export default function AppPage() {
 
   const handleClearData = () => {
     localStorage.removeItem("csvData");
+    localStorage.setItem("exportCount", "0"); // Reset export count
     setCsvData(defaultData);
     setGraphOptions({
-      ...graphOptions,
+      graphType: "bar",
       xAxis: "Date",
       yAxis: "Sales",
       title: "Sample Sales Data",
+      tooltipEnabled: true,
+      backgroundColor: "#4bc0c0",
+      gridEnabled: true,
     });
   };
 
@@ -61,33 +63,30 @@ export default function AppPage() {
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left Column: Inputs and Data Preview */}
         <div className="flex flex-col gap-6">
-          <Card className="p-4">
-            <h2 className="text-xl font-semibold mb-2">Data Input</h2>
+          <div>
+            <h2 className="text-xl font-semibold mb-2">CSV Input</h2>
             <CsvUploader onDataLoaded={setCsvData} />
-          </Card>
-          <Card className="p-4">
+          </div>
+          <div>
             <h2 className="text-xl font-semibold mb-2">Manual Entry</h2>
             <ManualEntry onDataLoaded={setCsvData} />
-          </Card>
-          <Card className="p-4">
+          </div>
+          <div>
             <h2 className="text-xl font-semibold mb-2">Data Preview</h2>
             <DataPreview data={csvData} />
-          </Card>
+          </div>
           <Button variant="destructive" onClick={handleClearData}>
             Reset to Default
           </Button>
         </div>
-        {/* Right Column: Graph Options and Display */}
+        {/* Right Column: Graph Options, Styles, and Display */}
         <div className="flex flex-col gap-6">
-          <Card className="p-4">
-            <h2 className="text-xl font-semibold mb-2">Graph Options</h2>
-            <GraphOptions data={csvData} onOptionsChange={setGraphOptions} />
-          </Card>
-          <Card className="p-4 relative">
-            <div className="absolute top-4 right-4">
+          <GraphOptions data={csvData} onOptionsChange={setGraphOptions} />
+          <div className="relative">
+            <div className="absolute top-0 right-0">
               <ExportButton graphRef={graphRef} />
             </div>
-            <h2 className="text-xl font-semibold mb-2">Graph Preview</h2>
+            <h2 className="text-xl font-semibold mb-2">Graph Display</h2>
             <div ref={graphRef}>
               <GraphDisplay
                 data={csvData}
@@ -100,7 +99,7 @@ export default function AppPage() {
                 gridEnabled={graphOptions.gridEnabled}
               />
             </div>
-          </Card>
+          </div>
         </div>
       </div>
     </main>
