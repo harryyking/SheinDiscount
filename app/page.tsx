@@ -236,7 +236,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 transition-all hover:shadow-md">
               <div className="p-4 bg-primary/5">
-                <img src="/placeholder.svg?height=200&width=300" alt="Bar chart example" className="w-full rounded" />
+                <img src="https://img.freepik.com/free-vector/illustration-data-analysis-graph_53876-17905.jpg?semt=ais_hybrid" alt="Bar chart example" className="w-full rounded" />
               </div>
               <div className="p-6">
                 <div className="flex items-center gap-2 mb-2">
@@ -251,7 +251,7 @@ export default function LandingPage() {
 
             <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 transition-all hover:shadow-md">
               <div className="p-4 bg-primary/5">
-                <img src="/placeholder.svg?height=200&width=300" alt="Line chart example" className="w-full rounded" />
+                <img src="https://img.freepik.com/free-vector/illustration-data-analysis-graph_53876-17902.jpg?semt=ais_hybrid" alt="Line chart example" className="w-full rounded" />
               </div>
               <div className="p-6">
                 <div className="flex items-center gap-2 mb-2">
@@ -266,7 +266,7 @@ export default function LandingPage() {
 
             <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 transition-all hover:shadow-md">
               <div className="p-4 bg-primary/5">
-                <img src="/placeholder.svg?height=200&width=300" alt="Pie chart example" className="w-full rounded" />
+                <img src="https://img.freepik.com/free-vector/3d-pie-chart-3_78370-628.jpg?semt=ais_hybrid" alt="Pie chart example" className="w-full rounded" />
               </div>
               <div className="p-6">
                 <div className="flex items-center gap-2 mb-2">
