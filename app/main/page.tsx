@@ -40,7 +40,7 @@ export default function AppPage() {
         Data Viz for Hustlers
       </h1>
       <CsvUploader onDataLoaded={setCsvData} />
-      {csvData.length > 0 ? (
+
         <div className="w-full max-w-4xl flex flex-col gap-6">
           <DataPreview data={csvData} />
           <GraphOptions data={csvData} onOptionsChange={setGraphOptions} />
@@ -61,9 +61,7 @@ export default function AppPage() {
             </Button>
           </div>
         </div>
-      ) : (
-        <p className="text-gray-500">Upload a CSV to get started!</p>
-      )}
+      
     </main>
   );
 }
