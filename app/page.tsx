@@ -77,8 +77,13 @@ export default function LandingPage() {
                   Transform your data into stunning visualizations without any technical skills. Upload, customize, and
                   share professional charts in just a few clicks.
                 </p>
-                  <Button size="lg" className="text-lg px-8 py-6 mt-4">
+
+                
+                  <Button size="lg" className=" px-8 py-6 mt-4">
+                    
+                    <Link href="/main " className="text-lg">
                     Start Creating <ArrowRight className="ml-2 h-5 w-5" />
+                    </Link>
                   </Button>
                   
                 
