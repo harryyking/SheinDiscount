@@ -88,8 +88,6 @@ export default function GraphDisplay({
       return isNaN(value) ? 0 : value;
     }),
     backgroundColor: backgroundColor || themeColors[`chart${index + 1}` as keyof typeof themeColors] || themeColors.primary,
-    borderColor: adjustColor(themeColors[`chart${index + 1}` as keyof typeof themeColors] || themeColors.primary, -0.2),
-    borderWidth: 1,
     tension: graphType === "line" && curveEnabled ? 0.4 : 0,
   }));
 
