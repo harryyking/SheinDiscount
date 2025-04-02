@@ -65,7 +65,7 @@ export default function AppPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4">
-      <h1 className="text-3xl font-bold text-gray-800 mt-4 mb-8">Data Viz for Hustlers</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mt-4 mb-8">GraphCraft</h1>
 
       <div className="w-full max-w-6xl flex flex-col gap-10">
         {/* Export Button */}
