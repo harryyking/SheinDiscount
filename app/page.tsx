@@ -152,7 +152,7 @@ export default function LandingPage() {
               {features.map((feature) => (
                 <div key={feature.title}>
                     <div
-                      className="p-3 rounded-full  bg-primary/10 text-primary w-12"
+                      className="p-3 rounded-full  bg-primary/10 text-primary w-20"
                     >
                       {feature.icon}
                     </div>
