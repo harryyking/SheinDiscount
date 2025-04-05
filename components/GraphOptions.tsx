@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Plus, Minus } from "lucide-react"; // Icons for add/remove
+import { Plus, Minus } from "lucide-react";
 
 export default function GraphOptions({
   data,
@@ -15,7 +15,7 @@ export default function GraphOptions({
   onOptionsChange: (options: {
     graphType: "bar" | "line" | "pie";
     xAxis: string;
-    yAxes: string[]; // Multi-Y-axis
+    yAxes: string[];
     title: string;
     tooltipEnabled: boolean;
     backgroundColor: string;
@@ -24,28 +24,38 @@ export default function GraphOptions({
   }) => void;
 }) {
   const [graphType, setGraphType] = useState<"bar" | "line" | "pie">("bar");
-  const [xAxis, setXAxis] = useState<string>("Date");
-  const [yAxes, setYAxes] = useState<string[]>(["Sales"]); // Multi-Y-axis
-  const [title, setTitle] = useState("Sample Sales Data");
+  const [xAxis, setXAxis] = useState<string>("");
+  const [yAxes, setYAxes] = useState<string[]>([""]);
+  const [title, setTitle] = useState("Chart Title");
   const [tooltipEnabled, setTooltipEnabled] = useState(true);
-  const [backgroundColor, setBackgroundColor] = useState("#4bc0c0");
+  const [backgroundColor, setBackgroundColor] = useState("var(--chart-1)");
   const [gridEnabled, setGridEnabled] = useState(true);
   const [curveEnabled, setCurveEnabled] = useState(true);
+
+  // Available theme colors from your global CSS
+  const themeColors = [
+    { value: "var(--chart-1)", label: "Chart Color 1" },
+    { value: "var(--chart-2)", label: "Chart Color 2" },
+    { value: "var(--chart-3)", label: "Chart Color 3" },
+    { value: "var(--chart-4)", label: "Chart Color 4" },
+    { value: "var(--chart-5)", label: "Chart Color 5" },
+    { value: "var(--primary)", label: "Primary" },
+  ];
 
   useEffect(() => {
     if (data.length > 0) {
       const columns = Object.keys(data[0]);
-      setXAxis(columns[0]);
-      setYAxes([columns[1] || columns[0]]); // Default to one Y-axis
+      setXAxis(columns[0] || "");
+      setYAxes([columns[1] || columns[0]]);
     }
   }, [data]);
 
   useEffect(() => {
-    if (xAxis && yAxes.length > 0) {
+    if (xAxis && yAxes.length > 0 && yAxes.every(y => y !== "")) {
       onOptionsChange({
         graphType,
         xAxis,
-        yAxes, // Multi-Y-axis
+        yAxes,
         title,
         tooltipEnabled,
         backgroundColor,
@@ -53,11 +63,11 @@ export default function GraphOptions({
         curveEnabled,
       });
     }
-  }, [graphType, xAxis, yAxes, title, tooltipEnabled, backgroundColor, gridEnabled, curveEnabled, onOptionsChange]);
+  }, [graphType,xAxis, yAxes, title, tooltipEnabled, backgroundColor, gridEnabled, curveEnabled, onOptionsChange])
 
   const addYAxis = () => setYAxes([...yAxes, ""]);
   const removeYAxis = (index: number) => {
-    if (yAxes.length === 1) return; // Keep at least one Y-axis
+    if (yAxes.length === 1) return;
     setYAxes(yAxes.filter((_, i) => i !== index));
   };
   const updateYAxis = (index: number, value: string) => {
@@ -68,7 +78,6 @@ export default function GraphOptions({
 
   return (
     <div className="w-full space-y-6">
-      {/* Graph Options Section */}
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-2">
@@ -78,7 +87,7 @@ export default function GraphOptions({
               onValueChange={(value) => setGraphType(value as "bar" | "line" | "pie")}
             >
               <SelectTrigger id="graph-type">
-                <SelectValue placeholder="Graph Type" />
+                <SelectValue placeholder="Select Graph Type" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="bar">Bar</SelectItem>
@@ -136,26 +145,26 @@ export default function GraphOptions({
         </div>
       </div>
 
-      {/* Graph Styles Section */}
       <div>
         <h2 className="text-xl font-semibold mb-4">Graph Styles</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-2">
             <Label htmlFor="color">Background Color</Label>
-            <div className="flex items-center gap-2">
-              <Input
-                id="color"
-                type="color"
-                value={backgroundColor}
-                onChange={(e) => setBackgroundColor(e.target.value)}
-                className="w-16 h-10"
-              />
-              <Input
-                value={backgroundColor}
-                onChange={(e) => setBackgroundColor(e.target.value)}
-                className="flex-1"
-              />
-            </div>
+            <Select
+              value={backgroundColor}
+              onValueChange={setBackgroundColor}
+            >
+              <SelectTrigger id="color">
+                <SelectValue placeholder="Select Color" />
+              </SelectTrigger>
+              <SelectContent>
+                {themeColors.map((color) => (
+                  <SelectItem key={color.value} value={color.value}>
+                    {color.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
@@ -178,7 +187,7 @@ export default function GraphOptions({
             <Label htmlFor="grid">Grid</Label>
             <Select
               value={gridEnabled ? "enabled" : "disabled"}
-              onValueChange={(value) => setTooltipEnabled(value === "enabled")}
+              onValueChange={(value) => setGridEnabled(value === "enabled")} // Fixed from setTooltipEnabled
             >
               <SelectTrigger id="grid">
                 <SelectValue placeholder="Grid" />
