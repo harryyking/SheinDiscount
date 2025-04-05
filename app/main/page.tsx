@@ -9,6 +9,7 @@ import DataPreview from "@/components/DataPreview";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { defaultData } from "@/lib/utils";
+import Link from "next/link";
 
 // Define the type for graph options explicitly
 interface GraphOptionsType {
@@ -65,7 +66,7 @@ export default function AppPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4">
-      <h1 className="text-3xl font-bold text-gray-800 mt-4 mb-8">GraphCraft</h1>
+      <Link href='/' className="text-3xl font-bold text-gray-800 mt-4 mb-8">GraphCraft</Link>
 
       <div className="w-full max-w-6xl flex flex-col gap-10">
         {/* Export Button */}

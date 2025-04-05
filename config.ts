@@ -1,8 +1,8 @@
 const config = {
-    domainName: "www.rentcomghana.com",
-    appName: "RentCom",
+    domainName: "www.graphcraft.site",
+    appName: "Graphcraft",
     appDescription:
-      "Find Your Perfect Space In Ghana. Rent, Lease And Discover Rental Properties Near For Your Business",
+      "Create beautiful graphs in seconds",
   };
   
   export default config;

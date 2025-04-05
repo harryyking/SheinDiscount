@@ -91,7 +91,7 @@ export const renderSchemaTags = () => {
             name: "Harry Arthur",
           },
           datePublished: "2024-12-01",
-          applicationCategory: "Real Estate",
+          applicationCategory: "Data Visualization",
           aggregateRating: {
             "@type": "AggregateRating",
             ratingValue: "4.8",
@@ -101,7 +101,7 @@ export const renderSchemaTags = () => {
             {
               "@type": "Offer",
               price: "19.00",
-              priceCurrency: "GHS",
+              priceCurrency: "USD",
             },
           ],
         }),
