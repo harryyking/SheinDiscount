@@ -31,7 +31,7 @@ export default function GraphDisplay({
   data,
   graphType,
   xAxis,
-  yAxes, // Changed to array
+  yAxes,
   title,
   tooltipEnabled,
   backgroundColor,
@@ -41,38 +41,27 @@ export default function GraphDisplay({
   data: any[];
   graphType: "bar" | "line" | "pie";
   xAxis: string;
-  yAxes: string[]; // Changed to array
+  yAxes: string[];
   title: string;
   tooltipEnabled: boolean;
-  backgroundColor: string;
+  backgroundColor?: string; // Made optional
   gridEnabled: boolean;
   curveEnabled: boolean;
 }) {
-  const [themeColors, setThemeColors] = useState({
-    primary: "oklch(0.723 0.219 149.579)",
-    foreground: "oklch(0.141 0.005 285.823)",
-    muted: "oklch(0.967 0.001 286.375)",
-    chart1: "oklch(0.646 0.222 41.116)",
-    chart2: "oklch(0.6 0.118 184.704)",
-    chart3: "oklch(0.398 0.07 227.392)",
-    chart4: "oklch(0.828 0.189 84.429)",
-    chart5: "oklch(0.769 0.188 70.08)",
-  });
+  const [chartColors, setChartColors] = useState<string[]>([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const root = document.documentElement;
       const computedStyles = getComputedStyle(root);
-      setThemeColors({
-        primary: computedStyles.getPropertyValue("--primary").trim() || "oklch(0.723 0.219 149.579)",
-        foreground: computedStyles.getPropertyValue("--foreground").trim() || "oklch(0.141 0.005 285.823)",
-        muted: computedStyles.getPropertyValue("--muted").trim() || "oklch(0.967 0.001 286.375)",
-        chart1: computedStyles.getPropertyValue("--chart-1").trim() || "oklch(0.646 0.222 41.116)",
-        chart2: computedStyles.getPropertyValue("--chart-2").trim() || "oklch(0.6 0.118 184.704)",
-        chart3: computedStyles.getPropertyValue("--chart-3").trim() || "oklch(0.398 0.07 227.392)",
-        chart4: computedStyles.getPropertyValue("--chart-4").trim() || "oklch(0.828 0.189 84.429)",
-        chart5: computedStyles.getPropertyValue("--chart-5").trim() || "oklch(0.769 0.188 70.08)",
-      });
+      const colors = [
+        computedStyles.getPropertyValue("--chart-1").trim(),
+        computedStyles.getPropertyValue("--chart-2").trim(),
+        computedStyles.getPropertyValue("--chart-3").trim(),
+        computedStyles.getPropertyValue("--chart-4").trim(),
+        computedStyles.getPropertyValue("--chart-5").trim(),
+      ];
+      setChartColors(colors);
     }
   }, []);
 
@@ -87,7 +76,8 @@ export default function GraphDisplay({
       const value = Number(row[yAxis]);
       return isNaN(value) ? 0 : value;
     }),
-    backgroundColor: backgroundColor || themeColors[`chart${index + 1}` as keyof typeof themeColors] || themeColors.primary,
+    backgroundColor: backgroundColor || chartColors[index] || "var(--primary)",
+    borderColor: graphType === "line" ? "var(--primary)" : undefined,
     tension: graphType === "line" && curveEnabled ? 0.4 : 0,
   }));
 
@@ -104,25 +94,25 @@ export default function GraphDisplay({
         display: true,
         text: title,
         font: { size: 18 },
-        color: themeColors.foreground,
+        color: "var(--foreground)", // Use CSS variable directly
       },
       tooltip: { enabled: tooltipEnabled },
       legend: {
-        display: true, // Always show legend for multiple datasets
-        labels: { color: themeColors.foreground },
+        display: true,
+        labels: { color: "var(--foreground)" }, // Use CSS variable directly
       },
     },
     scales:
       graphType !== "pie"
         ? {
             x: {
-              grid: { display: gridEnabled, color: themeColors.muted },
-              ticks: { color: themeColors.foreground },
+              grid: { display: gridEnabled, color: "var(--muted)" },
+              ticks: { color: "var(--foreground)" },
             },
             y: {
               beginAtZero: true,
-              grid: { display: gridEnabled, color: themeColors.muted },
-              ticks: { color: themeColors.foreground },
+              grid: { display: gridEnabled, color: "var(--muted)" },
+              ticks: { color: "var(--foreground)" },
             },
           }
         : undefined,
@@ -135,12 +125,4 @@ export default function GraphDisplay({
       {graphType === "pie" && <Pie data={chartData} options={options} />}
     </div>
   );
-}
-
-function adjustColor(color: string, amount: number) {
-  const match = color.match(/oklch\(([\d.]+) ([\d.]+) ([\d.]+)\)/);
-  if (!match) return color;
-  let [_, l, c, h] = match.map(Number);
-  l = Math.min(1, Math.max(0, l + amount));
-  return `oklch(${l} ${c} ${h})`;
 }

@@ -37,7 +37,7 @@ export default function ExportButton({
     reference: new Date().getTime().toString(),
     email: "user@example.com",
     amount: PAYMENT_AMOUNT,
-    publicKey: "pk_test_your_public_key_here",
+    publicKey: "pk_live_388df0bca96db2e47bffa41fe478056984cdac52",
     currency: "USD",
   };
 
