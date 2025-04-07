@@ -8,12 +8,6 @@ import { getSEOTags } from "@/lib/seo";
 const brandFont = Manrope({ subsets: ["latin"] });
 
 export const metadata = getSEOTags({
-  twitter: {
-    images: './favicon.ico'
-  },
-  openGraph: {
-    images: '/favicon.ico'
-  },
   keywords: [
     // General Graphing Keywords
     "interactive graphs",

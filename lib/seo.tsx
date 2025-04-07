@@ -40,7 +40,17 @@ export const getSEOTags = ({
       // If you add an opengraph-image.(jpg|jpeg|png|gif) image to the /app folder, you don't need the code below
       images: [
         {
-          url: 'https://utfs.io/f/xQbdaz3ivwOMlzPEdVevF75j6XELPdozUHSeB2Jbha9mZTc0',
+          url: 'https://img.freepik.com/free-vector/illustration-data-analysis-graph_53876-17902.jpg?semt=ais_hybrid?height=200&width=300',
+          width: 600,
+          height: 660,
+        },
+        {
+          url: 'https://img.freepik.com/free-vector/3d-pie-chart-3_78370-628.jpg?semt=ais_hybrid?height=200&width=300',
+          width: 600,
+          height: 660,
+        },
+        {
+          url: 'https://img.freepik.com/free-vector/illustration-data-analysis-graph_53876-17905.jpg?semt=ais_hybrid?height=200&width=300',
           width: 600,
           height: 660,
         },
