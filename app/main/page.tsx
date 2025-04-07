@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { defaultData } from "@/lib/utils";
 import Link from "next/link";
 
+
+
 // Define the type for graph options explicitly
 interface GraphOptionsType {
   graphType: "bar" | "line" | "pie";
