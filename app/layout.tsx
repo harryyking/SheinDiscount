@@ -4,6 +4,7 @@ import "./globals.css";
 import Provider from "@/components/Provider";
 import { Toaster } from "react-hot-toast";
 import { getSEOTags } from "@/lib/seo";
+import { Analytics } from "@vercel/analytics/react"
 
 const brandFont = Manrope({ subsets: ["latin"] });
 
@@ -64,6 +65,7 @@ export default function RootLayout({
         <Provider>
           {children}
           <Toaster position="top-right" />
+          <Analytics/>
         </Provider>
       </body>
     </html>
