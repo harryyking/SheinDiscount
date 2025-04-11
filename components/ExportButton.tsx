@@ -23,7 +23,7 @@ export default function ExportButton({
   const [exportCount, setExportCount] = useState(0);
   const [isClient, setIsClient] = useState(false);
   const FREE_EXPORT_LIMIT = 3;
-  const PAYMENT_AMOUNT = 100; // $1 = 100 cents (USD)
+  const PAYMENT_AMOUNT = 200; // $1 = 100 cents (USD)
 
   useEffect(() => {
     setIsClient(true);
@@ -38,7 +38,7 @@ export default function ExportButton({
     email: "user@example.com",
     amount: PAYMENT_AMOUNT,
     publicKey: "pk_live_388df0bca96db2e47bffa41fe478056984cdac52",
-    currency: "USD",
+    currency: "GHS",
   };
 
   const onSuccess = (response: any) => {
